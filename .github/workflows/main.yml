@@ -38,12 +38,12 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Checkout d4j
-        uses: actions/checkout@v2
-        with:
-          repository: amir9979/defects4j
-          path: .
-          fetch-depth: 0
+#       - name: Checkout d4j
+#         uses: actions/checkout@v2
+#         with:
+#           repository: amir9979/defects4j
+#           path: .
+#           fetch-depth: 0
       
       - run: cpanm --installdeps .
       - run: ./init.sh
