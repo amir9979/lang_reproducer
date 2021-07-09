@@ -47,7 +47,9 @@ jobs:
       
       - run: cpanm --installdeps .
       - run: |
-            chmod -R 777 .
+            chmod 777 ./init.sh
+            find . -name "*.sh" -exec chmod +x {} \;
+            find . -name "*.pl" -exec chmod +x {} \;
             ./init.sh
 
 #       - name: initialize-project-and-collect-issues
