@@ -1,0 +1,13 @@
+diff --git a/src/test/java/org/apache/commons/lang3/exception/AbstractExceptionContextTest.java b/src/test/java/org/apache/commons/lang3/exception/AbstractExceptionContextTest.java
+index f92b13d9c..cf9035c6b 100644
+--- a/src/test/java/org/apache/commons/lang3/exception/AbstractExceptionContextTest.java
++++ b/src/test/java/org/apache/commons/lang3/exception/AbstractExceptionContextTest.java
+@@ -178,7 +178,7 @@ public abstract class AbstractExceptionContextTest<T extends ExceptionContext &
+     public void testJavaSerialization() {
+         exceptionContext.setContextValue("test Poorly written obj", "serializable replacement");
+         
+-        final T clone = (T) SerializationUtils.deserialize(SerializationUtils.serialize(exceptionContext));
++        final T clone = SerializationUtils.deserialize(SerializationUtils.serialize(exceptionContext));
+         assertEquals(exceptionContext.getFormattedExceptionMessage(null), clone.getFormattedExceptionMessage(null));
+     }
+ }

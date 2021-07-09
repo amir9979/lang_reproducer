@@ -1,0 +1,17 @@
+diff --git a/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java b/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java
+index 50662d59e..b481dc575 100644
+--- a/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/reflect/MethodUtilsTest.java
+@@ -371,12 +371,6 @@ public class MethodUtilsTest {
+                 singletonArray(ChildObject.class), singletonArray(ChildInterface.class));
+     }
+ 
+-    @Test
+-    public void testNullArgument() {
+-        expectMatchingAccessibleMethodParameterTypes(TestBean.class, "oneParameter",
+-                singletonArray(null), singletonArray(String.class));
+-    }
+-
+     private void expectMatchingAccessibleMethodParameterTypes(Class<?> cls,
+             String methodName, Class<?>[] requestTypes, Class<?>[] actualTypes) {
+         Method m = MethodUtils.getMatchingAccessibleMethod(cls, methodName,

@@ -1,0 +1,22 @@
+diff --git a/src/test/java/org/apache/commons/lang3/BooleanUtilsTest.java b/src/test/java/org/apache/commons/lang3/BooleanUtilsTest.java
+index b68979424..4d104a0ee 100644
+--- a/src/test/java/org/apache/commons/lang3/BooleanUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/BooleanUtilsTest.java
+@@ -272,13 +272,13 @@ public class BooleanUtilsTest {
+         assertEquals(Boolean.TRUE, BooleanUtils.toBooleanObject("TruE"));
+         assertEquals(Boolean.TRUE, BooleanUtils.toBooleanObject("TruE"));
+ 
+-        assertEquals(Boolean.TRUE, BooleanUtils.toBooleanObject("y")); // yes
++        assertEquals(Boolean.TRUE, BooleanUtils.toBooleanObject("y"));
+         assertEquals(Boolean.TRUE, BooleanUtils.toBooleanObject("Y"));
+-        assertEquals(Boolean.TRUE, BooleanUtils.toBooleanObject("t")); // true
++        assertEquals(Boolean.TRUE, BooleanUtils.toBooleanObject("t"));
+         assertEquals(Boolean.TRUE, BooleanUtils.toBooleanObject("T"));
+-        assertEquals(Boolean.FALSE, BooleanUtils.toBooleanObject("f")); // false
++        assertEquals(Boolean.FALSE, BooleanUtils.toBooleanObject("f"));
+         assertEquals(Boolean.FALSE, BooleanUtils.toBooleanObject("F"));
+-        assertEquals(Boolean.FALSE, BooleanUtils.toBooleanObject("n")); // No
++        assertEquals(Boolean.FALSE, BooleanUtils.toBooleanObject("n"));
+         assertEquals(Boolean.FALSE, BooleanUtils.toBooleanObject("N"));
+         assertEquals(null, BooleanUtils.toBooleanObject("z"));
+ 

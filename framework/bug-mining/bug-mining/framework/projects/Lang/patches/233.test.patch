@@ -1,0 +1,24 @@
+diff --git a/src/test/java/org/apache/commons/lang3/reflect/ConstructorUtilsTest.java b/src/test/java/org/apache/commons/lang3/reflect/ConstructorUtilsTest.java
+index 583c8c073..b923e2f17 100644
+--- a/src/test/java/org/apache/commons/lang3/reflect/ConstructorUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/reflect/ConstructorUtilsTest.java
+@@ -25,7 +25,6 @@ import junit.framework.TestCase;
+ 
+ import org.apache.commons.lang3.ArrayUtils;
+ import org.apache.commons.lang3.math.NumberUtils;
+-import org.apache.commons.lang3.mutable.MutableObject;
+ 
+ /**
+  * Unit tests ConstructorUtils
+@@ -200,11 +199,6 @@ public class ConstructorUtilsTest extends TestCase {
+                 singletonArray(Double.TYPE), singletonArray(Double.TYPE));
+     }
+ 
+-    public void testNullArgument() {
+-        expectMatchingAccessibleConstructorParameterTypes(MutableObject.class,
+-                singletonArray(null), singletonArray(Object.class));
+-    }
+-
+     private void expectMatchingAccessibleConstructorParameterTypes(Class<?> cls,
+             Class<?>[] requestTypes, Class<?>[] actualTypes) {
+         Constructor<?> c = ConstructorUtils.getMatchingAccessibleConstructor(cls,

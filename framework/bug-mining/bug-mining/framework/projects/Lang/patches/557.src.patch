@@ -1,0 +1,43 @@
+diff --git a/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java b/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java
+index 7e43baa0a..02c4231e6 100644
+--- a/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java
++++ b/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java
+@@ -626,6 +626,16 @@ public abstract class ToStringStyle implements Serializable {
+      *  {@code toString}, not {@code null}
+      */
+     protected void appendDetail(final StringBuffer buffer, final String fieldName, final Collection<?> coll) {
++        if (coll != null && !coll.isEmpty()) {
++            buffer.append(arrayStart);
++            int i = 0;
++            for (final Object item : coll) {
++                appendDetail(buffer, fieldName, i++, item);
++            }
++            buffer.append(arrayEnd);
++            return;
++        }
++
+         buffer.append(coll);
+     }
+ 
+@@ -2587,21 +2597,6 @@ public abstract class ToStringStyle implements Serializable {
+             appendDetail(buffer, fieldName, valueAsString);
+         }
+ 
+-        @Override
+-        protected void appendDetail(final StringBuffer buffer, final String fieldName, final Collection<?> coll) {
+-            if (coll != null && !coll.isEmpty()) {
+-                buffer.append(getArrayStart());
+-                int i = 0;
+-                for (final Object item : coll) {
+-                    appendDetail(buffer, fieldName, i++, item);
+-                }
+-                buffer.append(getArrayEnd());
+-                return;
+-            }
+-
+-            buffer.append(coll);
+-        }
+-
+         @Override
+         protected void appendDetail(final StringBuffer buffer, final String fieldName, final Map<?, ?> map) {
+             if (map != null && !map.isEmpty()) {

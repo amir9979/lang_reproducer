@@ -1,0 +1,34 @@
+diff --git a/src/test/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyleTest.java b/src/test/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyleTest.java
+index e3a87f6de..daf2881f1 100644
+--- a/src/test/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyleTest.java
++++ b/src/test/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyleTest.java
+@@ -17,7 +17,7 @@
+ 
+ package org.apache.commons.lang3.builder;
+ 
+-import static org.junit.Assert.*;
++import static org.junit.Assert.assertEquals;
+ 
+ import java.util.ArrayList;
+ import java.util.List;
+@@ -200,20 +200,6 @@ public class MultilineRecursiveToStringStyleTest {
+                    + "]";
+         assertEquals(exp, toString(wa));
+     }
+-    
+-    
+-    @Test
+-    public void testLANG1319() throws Exception {
+-        final String[] stringArray = {"1", "2"};
+-        
+-        final String exp = getClassPrefix(stringArray) + "[" + BR 
+-                + "  {" + BR 
+-                + "    1," + BR 
+-                + "    2" + BR 
+-                + "  }" + BR 
+-                + "]";
+-        assertEquals(exp, toString(stringArray));
+-    }
+ 
+     private String getClassPrefix(final Object object) {
+         return object.getClass().getName() + "@" + Integer.toHexString(System.identityHashCode(object));

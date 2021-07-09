@@ -1,0 +1,14 @@
+diff --git a/src/test/java/org/apache/commons/lang3/StringUtilsEqualsIndexOfTest.java b/src/test/java/org/apache/commons/lang3/StringUtilsEqualsIndexOfTest.java
+index 7b328b06f..6b8b93563 100644
+--- a/src/test/java/org/apache/commons/lang3/StringUtilsEqualsIndexOfTest.java
++++ b/src/test/java/org/apache/commons/lang3/StringUtilsEqualsIndexOfTest.java
+@@ -1006,9 +1006,6 @@ public class StringUtilsEqualsIndexOfTest  {
+         assertEquals(7, StringUtils.ordinalIndexOf("aaaaaaaaa", "a", 8));
+         assertEquals(8, StringUtils.ordinalIndexOf("aaaaaaaaa", "a", 9));
+         assertEquals(-1, StringUtils.ordinalIndexOf("aaaaaaaaa", "a", 10));
+-
+-        assertEquals(3, StringUtils.ordinalIndexOf("aaaaaa", "aa", 2));
+-        assertEquals(-1, StringUtils.ordinalIndexOf("aaaaaa", "aa", 3));
+     }
+ 
+ }

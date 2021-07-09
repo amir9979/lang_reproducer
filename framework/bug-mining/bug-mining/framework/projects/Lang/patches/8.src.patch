@@ -1,0 +1,13 @@
+diff --git a/src/java/org/apache/commons/lang/StringUtils.java b/src/java/org/apache/commons/lang/StringUtils.java
+index 4d0d8c558..62b529197 100644
+--- a/src/java/org/apache/commons/lang/StringUtils.java
++++ b/src/java/org/apache/commons/lang/StringUtils.java
+@@ -2197,7 +2197,7 @@ public class StringUtils {
+      * StringUtils.splitPreserveAllTokens(null, *)         = null
+      * StringUtils.splitPreserveAllTokens("", *)           = []
+      * StringUtils.splitPreserveAllTokens("a.b.c", '.')    = ["a", "b", "c"]
+-     * StringUtils.splitPreserveAllTokens("a..b.c", '.')   = ["a", "", "b", "c"]
++     * StringUtils.splitPreserveAllTokens("a..b.c", '.')   = ["a", "b", "c"]
+      * StringUtils.splitPreserveAllTokens("a:b:c", '.')    = ["a:b:c"]
+      * StringUtils.splitPreserveAllTokens("a\tb\nc", null) = ["a", "b", "c"]
+      * StringUtils.splitPreserveAllTokens("a b c", ' ')    = ["a", "b", "c"]

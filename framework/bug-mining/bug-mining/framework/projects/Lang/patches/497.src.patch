@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java b/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java
+index efb630c62..3a7ac1780 100644
+--- a/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java
++++ b/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java
+@@ -157,7 +157,7 @@ public class TypeUtils {
+         private ParameterizedTypeImpl(final Class<?> raw, final Type useOwner, final Type[] typeArguments) {
+             this.raw = raw;
+             this.useOwner = useOwner;
+-            this.typeArguments = Arrays.copyOf(typeArguments, typeArguments.length, Type[].class);
++            this.typeArguments = typeArguments.clone();
+         }
+ 
+         /**

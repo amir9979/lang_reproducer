@@ -1,0 +1,18 @@
+diff --git a/src/test/java/org/apache/commons/lang3/StringUtilsTest.java b/src/test/java/org/apache/commons/lang3/StringUtilsTest.java
+index a21c7e129..95e98afd0 100644
+--- a/src/test/java/org/apache/commons/lang3/StringUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/StringUtilsTest.java
+@@ -236,13 +236,6 @@ public class StringUtilsTest {
+     }
+ 
+     //-----------------------------------------------------------------------
+-    //Fixed LANG-1463
+-    @Test
+-    public void testAbbreviateMarkerWithEmptyString() {
+-        String greaterThanMaxTest = "much too long text";
+-        assertEquals("much too long", StringUtils.abbreviate(greaterThanMaxTest, "", 13));
+-    }
+-
+     @Test
+     public void testAbbreviate_StringInt() {
+         assertNull(StringUtils.abbreviate(null, 10));

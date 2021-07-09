@@ -1,0 +1,31 @@
+diff --git a/src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java b/src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java
+index c9a6267fe..669048fb3 100644
+--- a/src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java
++++ b/src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java
+@@ -49,22 +49,20 @@ abstract class MemberUtils {
+      * sufficiently privileged code. Better workarounds would be gratefully
+      * accepted.
+      * @param o the AccessibleObject to set as accessible
+-     * @return a boolean indicating whether the accessibility of the object was set to true.
+      */
+-    static boolean setAccessibleWorkaround(final AccessibleObject o) {
++    static void setAccessibleWorkaround(final AccessibleObject o) {
+         if (o == null || o.isAccessible()) {
+-            return false;
++            return;
+         }
+         final Member m = (Member) o;
+-        if (!o.isAccessible() && Modifier.isPublic(m.getModifiers()) && isPackageAccess(m.getDeclaringClass().getModifiers())) {
++        if (Modifier.isPublic(m.getModifiers())
++                && isPackageAccess(m.getDeclaringClass().getModifiers())) {
+             try {
+                 o.setAccessible(true);
+-                return true;
+             } catch (final SecurityException e) { // NOPMD
+                 // ignore in favor of subsequent IllegalAccessException
+             }
+         }
+-        return false;
+     }
+ 
+     /**

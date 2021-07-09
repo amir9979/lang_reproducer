@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/apache/commons/lang3/LocaleUtils.java b/src/main/java/org/apache/commons/lang3/LocaleUtils.java
+index 7568f2c66..e13d1aa7c 100644
+--- a/src/main/java/org/apache/commons/lang3/LocaleUtils.java
++++ b/src/main/java/org/apache/commons/lang3/LocaleUtils.java
+@@ -290,7 +290,7 @@ public class LocaleUtils {
+         static {
+             List<Locale> list = new ArrayList<Locale>(Arrays.asList(Locale.getAvailableLocales()));  // extra safe
+             AVAILABLE_LOCALE_LIST = Collections.unmodifiableList(list);
+-            AVAILABLE_LOCALE_SET = Collections.unmodifiableSet(new HashSet<Locale>(list));
++            AVAILABLE_LOCALE_SET = Collections.unmodifiableSet(new HashSet<Locale>(availableLocaleList()));
+         }
+     }
+ 

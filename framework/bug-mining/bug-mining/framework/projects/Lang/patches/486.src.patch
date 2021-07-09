@@ -1,0 +1,272 @@
+diff --git a/src/main/java/org/apache/commons/lang3/time/DateFormatUtils.java b/src/main/java/org/apache/commons/lang3/time/DateFormatUtils.java
+index b353e0db0..09d2c521c 100644
+--- a/src/main/java/org/apache/commons/lang3/time/DateFormatUtils.java
++++ b/src/main/java/org/apache/commons/lang3/time/DateFormatUtils.java
+@@ -38,7 +38,7 @@ public class DateFormatUtils {
+      * The UTC time zone (often referred to as GMT).
+      * This is private as it is mutable.
+      */
+-    private static final TimeZone UTC_TIME_ZONE = FastTimeZone.getGmtTimeZone();
++    private static final TimeZone UTC_TIME_ZONE = TimeZone.getTimeZone("GMT");
+ 
+     /**
+      * ISO 8601 formatter for date-time without time zone.
+diff --git a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+index 33815588e..3c8fe8c72 100644
+--- a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
++++ b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+@@ -888,8 +888,11 @@ public class FastDateParser implements DateParser, Serializable {
+          */
+         @Override
+         void setCalendar(final FastDateParser parser, final Calendar cal, final String timeZone) {
+-            TimeZone tz = FastTimeZone.getGmtTimeZone(timeZone);
+-            if (tz != null) {
++            if (timeZone.charAt(0) == '+' || timeZone.charAt(0) == '-') {
++                final TimeZone tz = TimeZone.getTimeZone(TimeZones.GMT_ID + timeZone);
++                cal.setTimeZone(tz);
++            } else if (timeZone.regionMatches(true, 0, TimeZones.GMT_ID, 0, 3)) {
++                final TimeZone tz = TimeZone.getTimeZone(timeZone.toUpperCase(Locale.ROOT));
+                 cal.setTimeZone(tz);
+             } else {
+                 final TzInfo tzInfo = tzNames.get(timeZone.toLowerCase(locale));
+@@ -915,7 +918,11 @@ public class FastDateParser implements DateParser, Serializable {
+          */
+         @Override
+         void setCalendar(final FastDateParser parser, final Calendar cal, final String value) {
+-            cal.setTimeZone(FastTimeZone.getGmtTimeZone(value));
++            if (value.equals("Z")) {
++                cal.setTimeZone(TimeZone.getTimeZone(TimeZones.GMT_ID));
++            } else {
++                cal.setTimeZone(TimeZone.getTimeZone(TimeZones.GMT_ID + value));
++            }
+         }
+ 
+         private static final Strategy ISO_8601_1_STRATEGY = new ISO8601TimeZoneStrategy("(Z|(?:[+-]\\d{2}))");
+diff --git a/src/main/java/org/apache/commons/lang3/time/FastTimeZone.java b/src/main/java/org/apache/commons/lang3/time/FastTimeZone.java
+deleted file mode 100644
+index 3962479f4..000000000
+--- a/src/main/java/org/apache/commons/lang3/time/FastTimeZone.java
++++ /dev/null
+@@ -1,95 +0,0 @@
+-/*
+- * Licensed to the Apache Software Foundation (ASF) under one or more
+- * contributor license agreements.  See the NOTICE file distributed with
+- * this work for additional information regarding copyright ownership.
+- * The ASF licenses this file to You under the Apache License, Version 2.0
+- * (the "License"); you may not use this file except in compliance with
+- * the License.  You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-package org.apache.commons.lang3.time;
+-
+-import java.util.TimeZone;
+-import java.util.regex.Matcher;
+-import java.util.regex.Pattern;
+-
+-/**
+- * Faster methods to produce custom time zones.
+- *
+- * @since 3.7
+- */
+-public class FastTimeZone {
+-
+-    private static final TimeZone GREENWICH = new GmtTimeZone(false, 0, 0);
+-
+-    // do not instantiate
+-    private FastTimeZone() {
+-    }
+-
+-    /**
+-     * Get the GMT TimeZone.
+-     * @return A TimeZone with a raw offset of zero.
+-     */
+-    public static TimeZone getGmtTimeZone() {
+-        return GREENWICH;
+-    }
+-
+-    /**
+-     * Get a TimeZone, looking first for GMT custom ids, then falling back to Olson ids.
+-     * A GMT custom id can be 'Z', or 'UTC', or has an optional prefix of GMT,
+-     * followed by sign, hours digit(s), optional colon(':'), and optional minutes digits.
+-     * i.e. <em>[GMT] (+|-) Hours [[:] Minutes]</em>
+-     *
+-     * @param id A GMT custom id (or Olson id
+-     * @return A timezone
+-     */
+-    public static TimeZone getTimeZone(String id) {
+-        TimeZone tz = getGmtTimeZone(id);
+-        if (tz != null) {
+-            return tz;
+-        }
+-        return TimeZone.getTimeZone(id);
+-    }
+-
+-    private static final Pattern GMT_PATTERN = Pattern.compile("^(?:(?i)GMT)?([+-])?(\\d\\d?)?(:?(\\d\\d?))?$");
+-
+-    /**
+-     * Get a TimeZone with GMT offsets.  A GMT offset must be either 'Z', or 'UTC', or match
+-     * <em>(GMT)? hh?(:?mm?)?</em>, where h and m are digits representing hours and minutes.
+-     *
+-     * @param pattern The GMT offset
+-     * @return A TimeZone with offset from GMT or null, if pattern does not match.
+-     */
+-    public static TimeZone getGmtTimeZone(String pattern) {
+-        if ("Z".equals(pattern) || "UTC".equals(pattern)) {
+-            return GREENWICH;
+-        }
+-
+-        Matcher m = GMT_PATTERN.matcher(pattern);
+-        if (m.matches()) {
+-            int hours = parseInt(m.group(2));
+-            int minutes = parseInt(m.group(4));
+-            if (hours == 0 && minutes == 0) {
+-                return GREENWICH;
+-            }
+-            return new GmtTimeZone(parseSign(m.group(1)), hours, minutes);
+-        }
+-        return null;
+-    }
+-
+-    private static int parseInt(String group) {
+-        return group != null ? Integer.parseInt(group) : 0;
+-    }
+-
+-    private static boolean parseSign(String group) {
+-        return group != null && group.charAt(0) == '-';
+-    }
+-
+-}
+diff --git a/src/main/java/org/apache/commons/lang3/time/GmtTimeZone.java b/src/main/java/org/apache/commons/lang3/time/GmtTimeZone.java
+deleted file mode 100644
+index 1a7462b3d..000000000
+--- a/src/main/java/org/apache/commons/lang3/time/GmtTimeZone.java
++++ /dev/null
+@@ -1,106 +0,0 @@
+-/*
+- * Licensed to the Apache Software Foundation (ASF) under one or more
+- * contributor license agreements.  See the NOTICE file distributed with
+- * this work for additional information regarding copyright ownership.
+- * The ASF licenses this file to You under the Apache License, Version 2.0
+- * (the "License"); you may not use this file except in compliance with
+- * the License.  You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-package org.apache.commons.lang3.time;
+-
+-import java.util.Date;
+-import java.util.TimeZone;
+-
+-/**
+- * Custom timezone that contains offset from GMT.
+- *
+- * @since 3.7
+- */
+-class GmtTimeZone extends TimeZone {
+-
+-    private static final int MILLISECONDS_PER_MINUTE = 60 * 1000;
+-    private static final int MINUTES_PER_HOUR = 60;
+-    private static final int HOURS_PER_DAY = 24;
+-
+-    // Serializable!
+-    static final long serialVersionUID = 1L;
+-
+-    private final int offset;
+-    private final String zoneId;
+-
+-    GmtTimeZone(boolean negate, int hours, int minutes) {
+-        if (hours >= HOURS_PER_DAY) {
+-            throw new IllegalArgumentException(hours + " hours out of range");
+-        }
+-        if (minutes >= MINUTES_PER_HOUR) {
+-            throw new IllegalArgumentException(minutes + " minutes out of range");
+-        }
+-        int milliseconds = (minutes + (hours * MINUTES_PER_HOUR)) * MILLISECONDS_PER_MINUTE;
+-        offset = negate ? -milliseconds : milliseconds;
+-        zoneId = twoDigits(
+-            twoDigits(new StringBuilder(9).append("GMT").append(negate ? '-' : '+'), hours)
+-                .append(':'), minutes).toString();
+-
+-    }
+-
+-    private static StringBuilder twoDigits(StringBuilder sb, int n) {
+-        return sb.append((char) ('0' + (n / 10))).append((char) ('0' + (n % 10)));
+-    }
+-
+-    @Override
+-    public int getOffset(int era, int year, int month, int day, int dayOfWeek, int milliseconds) {
+-        return offset;
+-    }
+-
+-    @Override
+-    public void setRawOffset(int offsetMillis) {
+-        throw new UnsupportedOperationException();
+-    }
+-
+-    @Override
+-    public int getRawOffset() {
+-        return offset;
+-    }
+-
+-    @Override
+-    public String getID() {
+-        return zoneId;
+-    }
+-
+-    @Override
+-    public boolean useDaylightTime() {
+-        return false;
+-    }
+-
+-    @Override
+-    public boolean inDaylightTime(Date date) {
+-        return false;
+-    }
+-
+-    @Override
+-    public String toString() {
+-        return "[GmtTimeZone id=\"" + zoneId + "\",offset=" + offset + ']';
+-    }
+-
+-    @Override
+-    public int hashCode() {
+-        return offset;
+-    }
+-
+-    @Override
+-    public boolean equals(Object other) {
+-        if (!(other instanceof GmtTimeZone)) {
+-            return false;
+-        } else {
+-            return zoneId == ((GmtTimeZone) other).zoneId;
+-        }
+-    }
+-}
+diff --git a/src/main/java/org/apache/commons/lang3/time/TimeZones.java b/src/main/java/org/apache/commons/lang3/time/TimeZones.java
+index 5a7569042..634a9e321 100644
+--- a/src/main/java/org/apache/commons/lang3/time/TimeZones.java
++++ b/src/main/java/org/apache/commons/lang3/time/TimeZones.java
+@@ -24,10 +24,6 @@ package org.apache.commons.lang3.time;
+  */
+ public class TimeZones {
+ 
+-    // do not instantiate
+-    private TimeZones() {
+-    }
+-
+     /**
+      * A public version of {@link java.util.TimeZone}'s package private {@code GMT_ID} field.
+      */

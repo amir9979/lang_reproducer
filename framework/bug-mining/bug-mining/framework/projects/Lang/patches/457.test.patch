@@ -1,0 +1,30 @@
+diff --git a/src/test/java/org/apache/commons/lang3/text/WordUtilsTest.java b/src/test/java/org/apache/commons/lang3/text/WordUtilsTest.java
+index 05d3b8af9..827576812 100644
+--- a/src/test/java/org/apache/commons/lang3/text/WordUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/text/WordUtilsTest.java
+@@ -16,7 +16,10 @@
+  */
+ package org.apache.commons.lang3.text;
+ 
+-import static org.junit.Assert.*;
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertFalse;
++import static org.junit.Assert.assertNotNull;
++import static org.junit.Assert.assertTrue;
+ 
+ import java.lang.reflect.Constructor;
+ import java.lang.reflect.Modifier;
+@@ -414,13 +417,5 @@ public class WordUtilsTest {
+         final String expect = "tHIS sTRING CONTAINS A tITLEcASE CHARACTER: \u01C9";
+         assertEquals(expect, WordUtils.swapCase(test));
+     }
+-    
+-    @Test
+-    public void testLANG1292() throws Exception {
+-        // Prior to fix, this was throwing StringIndexOutOfBoundsException
+-        WordUtils.wrap("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+-                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",70);
+-    }
+ 
+ }

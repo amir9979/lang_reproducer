@@ -1,0 +1,23 @@
+diff --git a/src/test/java/org/apache/commons/lang3/text/StrSubstitutorTest.java b/src/test/java/org/apache/commons/lang3/text/StrSubstitutorTest.java
+index 89ee7b4aa..c723d2490 100644
+--- a/src/test/java/org/apache/commons/lang3/text/StrSubstitutorTest.java
++++ b/src/test/java/org/apache/commons/lang3/text/StrSubstitutorTest.java
+@@ -589,18 +589,6 @@ public class StrSubstitutorTest {
+             + "directory is ${user.home}."));
+     }
+ 
+-    /**
+-     * Test for LANG-1055: StrSubstitutor.replaceSystemProperties does not work consistently
+-     */
+-    @Test
+-    public void testLANG1055() {
+-        System.setProperty("test_key",  "test_value");
+-
+-        String expected = StrSubstitutor.replace("test_key=${test_key}", System.getProperties());
+-        String actual = StrSubstitutor.replaceSystemProperties("test_key=${test_key}");
+-        assertEquals(expected, actual);
+-    }
+-
+     /**
+      * Test the replace of a properties object
+      */

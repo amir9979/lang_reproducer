@@ -1,0 +1,29 @@
+diff --git a/src/test/java/org/apache/commons/lang3/builder/EqualsBuilderTest.java b/src/test/java/org/apache/commons/lang3/builder/EqualsBuilderTest.java
+index d516dcafe..8dad5e8eb 100644
+--- a/src/test/java/org/apache/commons/lang3/builder/EqualsBuilderTest.java
++++ b/src/test/java/org/apache/commons/lang3/builder/EqualsBuilderTest.java
+@@ -1346,18 +1346,12 @@ public class EqualsBuilderTest {
+         Object firstObject = new Object();
+         Object secondObject = new Object();
+ 
+-        try {
+-            Method registerMethod = MethodUtils.getMatchingMethod(EqualsBuilder.class, "register", Object.class, Object.class);
+-            registerMethod.setAccessible(true);
+-            registerMethod.invoke(null, firstObject, secondObject);
+-
+-            assertTrue(EqualsBuilder.isRegistered(firstObject, secondObject));
+-            assertTrue(EqualsBuilder.isRegistered(secondObject, firstObject)); // LANG-1349
+-        } finally {
+-            Method unregisterMethod = MethodUtils.getMatchingMethod(EqualsBuilder.class, "unregister", Object.class, Object.class);
+-            unregisterMethod.setAccessible(true);
+-            unregisterMethod.invoke(null, firstObject, secondObject);
+-        }
++        Method registerMethod = MethodUtils.getMatchingMethod(EqualsBuilder.class, "register", Object.class, Object.class);
++        registerMethod.setAccessible(true);
++        registerMethod.invoke(null, firstObject, secondObject);
++
++        assertTrue(EqualsBuilder.isRegistered(firstObject, secondObject));
++        assertTrue(EqualsBuilder.isRegistered(secondObject, firstObject)); // LANG-1349
+     }
+ }
+ 

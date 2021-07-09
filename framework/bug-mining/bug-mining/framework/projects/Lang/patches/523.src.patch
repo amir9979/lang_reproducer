@@ -1,0 +1,22 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index a2402b18d..7741303bd 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -6369,7 +6369,7 @@ public class StringUtils {
+              searchString = searchString.toLowerCase();
+          }
+          int start = 0;
+-         int end = ignoreCase ? indexOfIgnoreCase(text, searchString, start) : indexOf(text, searchString, start);
++         int end = searchText.indexOf(searchString, start);
+          if (end == INDEX_NOT_FOUND) {
+              return text;
+          }
+@@ -6384,7 +6384,7 @@ public class StringUtils {
+              if (--max == 0) {
+                  break;
+              }
+-             end = ignoreCase ? indexOfIgnoreCase(text, searchString, start) : indexOf(text, searchString, start);
++             end = searchText.indexOf(searchString, start);
+          }
+          buf.append(text, start, text.length());
+          return buf.toString();

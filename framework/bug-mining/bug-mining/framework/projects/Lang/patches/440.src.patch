@@ -1,0 +1,40 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index d92604d9b..cec4fa6a1 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -247,7 +247,7 @@ public class StringUtils {
+      */
+     public static boolean isAnyEmpty(final CharSequence... css) {
+       if (ArrayUtils.isEmpty(css)) {
+-        return false;
++        return true;
+       }
+       for (final CharSequence cs : css){
+         if (isEmpty(cs)) {
+@@ -276,7 +276,7 @@ public class StringUtils {
+      */
+     public static boolean isAnyNotEmpty(final CharSequence... css) {
+       if (ArrayUtils.isEmpty(css)) {
+-        return false;
++        return true;
+       }
+       for (final CharSequence cs : css) {
+         if (isNotEmpty(cs)) {
+@@ -377,7 +377,7 @@ public class StringUtils {
+      */
+     public static boolean isAnyBlank(final CharSequence... css) {
+       if (ArrayUtils.isEmpty(css)) {
+-        return false;
++        return true;
+       }
+       for (final CharSequence cs : css){
+         if (isBlank(cs)) {
+@@ -407,7 +407,7 @@ public class StringUtils {
+      */
+     public static boolean isAnyNotBlank(final CharSequence... css) {
+       if (ArrayUtils.isEmpty(css)) {
+-        return false;
++        return true;
+       }
+       for (final CharSequence cs : css) {
+         if (isNotBlank(cs)) {

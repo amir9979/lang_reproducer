@@ -1,0 +1,17 @@
+diff --git a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+index e69ab40cc..99e197ef1 100644
+--- a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
++++ b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+@@ -684,10 +684,10 @@ public class FastDateParser implements DateParser, Serializable {
+         @Override
+         public boolean addRegex(FastDateParser parser, StringBuilder regex) {
+             if(parser.isNextNumber()) {
+-                regex.append("(\\p{IsNd}{").append(parser.getFieldWidth()).append("}+)");
++                regex.append("(\\d{").append(parser.getFieldWidth()).append("}+)");
+             }
+             else {
+-                regex.append("(\\p{IsNd}++)");
++                regex.append("(\\d++)");
+             }
+             return true;
+         }

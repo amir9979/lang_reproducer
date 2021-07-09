@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index a0f83a159..968093a11 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -5765,7 +5765,7 @@ public class StringUtils {
+         }
+ 
+         final char firstChar = str.charAt(0);
+-        final char newChar = Character.toTitleCase(firstChar);
++        final char newChar = Character.toUpperCase(firstChar);
+         if (firstChar == newChar) {
+             // already capitalized
+             return str;

@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java b/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java
+index 9778abc7c..658e3cacb 100644
+--- a/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java
++++ b/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java
+@@ -1118,7 +1118,7 @@ public class FastDatePrinter implements DatePrinter, Serializable {
+          */
+         @Override
+         public final void appendTo(final Appendable buffer, final int value) throws IOException {
+-            appendDigits(buffer, value % 100);
++            appendDigits(buffer, value);
+         }
+     }
+ 

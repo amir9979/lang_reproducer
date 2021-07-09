@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java b/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java
+index 36fe8677d..e24aa3100 100644
+--- a/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java
++++ b/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java
+@@ -2591,7 +2591,7 @@ public abstract class ToStringStyle implements Serializable {
+ 
+         private boolean isJsonArray(final String valueAsString) {
+             return valueAsString.startsWith(getArrayStart())
+-                    && valueAsString.endsWith(getArrayEnd());
++                    && valueAsString.startsWith(getArrayEnd());
+         }
+ 
+         private boolean isJsonObject(final String valueAsString) {

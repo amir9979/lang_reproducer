@@ -1,0 +1,31 @@
+diff --git a/src/test/java/org/apache/commons/lang3/CharSetTest.java b/src/test/java/org/apache/commons/lang3/CharSetTest.java
+index d335245c7..014d7b765 100644
+--- a/src/test/java/org/apache/commons/lang3/CharSetTest.java
++++ b/src/test/java/org/apache/commons/lang3/CharSetTest.java
+@@ -18,7 +18,10 @@
+  */
+ package org.apache.commons.lang3;
+ 
+-import static org.junit.Assert.*;
++import static org.junit.Assert.assertEquals;
++import static org.junit.Assert.assertFalse;
++import static org.junit.Assert.assertSame;
++import static org.junit.Assert.assertTrue;
+ 
+ import java.lang.reflect.Modifier;
+ 
+@@ -463,14 +466,4 @@ public class CharSetTest  {
+         assertTrue(ArrayUtils.contains(array, CharRange.isIn('0', '9')));
+     }
+     
+-    @Test
+-    public void testJavadocExamples() throws Exception {
+-        assertFalse(CharSet.getInstance("^a-c").contains('a'));
+-        assertTrue(CharSet.getInstance("^a-c").contains('d'));
+-        assertTrue(CharSet.getInstance("^^a-c").contains('a'));
+-        assertFalse(CharSet.getInstance("^^a-c").contains('^'));
+-        assertTrue(CharSet.getInstance("^a-cd-f").contains('d'));
+-        assertTrue(CharSet.getInstance("a-c^").contains('^'));
+-        assertTrue(CharSet.getInstance("^", "a-c").contains('^'));        
+-    }
+ }

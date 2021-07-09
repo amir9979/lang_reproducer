@@ -1,0 +1,54 @@
+diff --git a/src/test/java/org/apache/commons/lang3/reflect/FieldUtilsTest.java b/src/test/java/org/apache/commons/lang3/reflect/FieldUtilsTest.java
+index 15fe8c32c..f52de064e 100644
+--- a/src/test/java/org/apache/commons/lang3/reflect/FieldUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/reflect/FieldUtilsTest.java
+@@ -37,7 +37,6 @@ import java.util.List;
+ import org.apache.commons.lang3.ArrayUtils;
+ import org.apache.commons.lang3.JavaVersion;
+ import org.apache.commons.lang3.SystemUtils;
+-import org.apache.commons.lang3.compare.ObjectToStringComparator;
+ import org.apache.commons.lang3.reflect.testbed.Ambig;
+ import org.apache.commons.lang3.reflect.testbed.Annotated;
+ import org.apache.commons.lang3.reflect.testbed.Foo;
+@@ -166,10 +165,10 @@ public class FieldUtilsTest {
+     @Test
+     public void testGetAllFields() {
+         assertArrayEquals(new Field[0], FieldUtils.getAllFields(Object.class));
+-        final Field[] fieldsNumber = sort(Number.class.getDeclaredFields());
+-        assertArrayEquals(fieldsNumber, sort(FieldUtils.getAllFields(Number.class)));
++        final Field[] fieldsNumber = Number.class.getDeclaredFields();
++        assertArrayEquals(fieldsNumber, FieldUtils.getAllFields(Number.class));
+         final Field[] fieldsInteger = Integer.class.getDeclaredFields();
+-        assertArrayEquals(sort(ArrayUtils.addAll(fieldsInteger, fieldsNumber)), sort(FieldUtils.getAllFields(Integer.class)));
++        assertArrayEquals(ArrayUtils.addAll(fieldsInteger, fieldsNumber), FieldUtils.getAllFields(Integer.class));
+         final Field[] allFields = FieldUtils.getAllFields(PublicChild.class);
+         // Under Jacoco,0.8.1 and Java 10, the field count is 7.
+         int expected = 5;
+@@ -181,11 +180,6 @@ public class FieldUtilsTest {
+         assertEquals(expected, allFields.length, Arrays.toString(allFields));
+     }
+ 
+-    private Field[] sort(Field[] fields) {
+-        // Field does not implement Comparable, so we use a KISS solution here.
+-        return ArrayUtils.sort(fields, ObjectToStringComparator.INSTANCE);
+-    }
+-
+     @Test
+     public void testGetAllFieldsList() {
+         assertEquals(0, FieldUtils.getAllFieldsList(Object.class).size());
+@@ -210,11 +204,11 @@ public class FieldUtilsTest {
+     @Test
+     public void testGetFieldsWithAnnotation() throws NoSuchFieldException {
+         assertArrayEquals(new Field[0], FieldUtils.getFieldsWithAnnotation(Object.class, Annotated.class));
+-        final Field[] annotatedFields = sort(new Field[] { 
++        final Field[] annotatedFields = new Field[]{
+                 FieldUtilsTest.class.getDeclaredField("publicChild"),
+-                FieldUtilsTest.class.getDeclaredField("privatelyShadowedChild") });
+-        assertArrayEquals(annotatedFields,
+-                sort(FieldUtils.getFieldsWithAnnotation(FieldUtilsTest.class, Annotated.class)));
++                FieldUtilsTest.class.getDeclaredField("privatelyShadowedChild")
++        };
++        assertArrayEquals(annotatedFields, FieldUtils.getFieldsWithAnnotation(FieldUtilsTest.class, Annotated.class));
+     }
+ 
+     @Test

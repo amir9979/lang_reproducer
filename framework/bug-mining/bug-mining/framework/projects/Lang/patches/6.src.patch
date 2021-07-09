@@ -1,0 +1,115 @@
+diff --git a/src/java/org/apache/commons/lang/CharSetUtils.java b/src/java/org/apache/commons/lang/CharSetUtils.java
+index 8b3a35cb6..bbb05c7e4 100644
+--- a/src/java/org/apache/commons/lang/CharSetUtils.java
++++ b/src/java/org/apache/commons/lang/CharSetUtils.java
+@@ -63,9 +63,8 @@ package org.apache.commons.lang;
+  * @author <a href="bayard@generationjava.com">Henri Yandell</a>
+  * @author Stephen Colebourne
+  * @author Phil Steitz
+- * @author Gary Gregory
+  * @since 1.0
+- * @version $Id: CharSetUtils.java,v 1.25 2003/08/22 03:06:36 ggregory Exp $
++ * @version $Id: CharSetUtils.java,v 1.24 2003/08/19 00:21:46 scolebourne Exp $
+  */
+ public class CharSetUtils {
+ 
+@@ -253,7 +252,6 @@ public class CharSetUtils {
+      * @param str  String to keep characters from, may be null
+      * @param set  String set of characters to keep, may be null
+      * @return modified String, <code>null</code> if null string input
+-     * @since 2.0
+      */
+     public static String keep(String str, String set) {
+         if (str == null) {
+@@ -281,7 +279,6 @@ public class CharSetUtils {
+      * @param str  String to keep characters from, may be null
+      * @param set  String[] set of characters to keep, may be null
+      * @return modified String, <code>null</code> if null string input
+-     * @since 2.0
+      */
+     public static String keep(String str, String[] set) {
+         if (str == null) {
+diff --git a/src/java/org/apache/commons/lang/SystemUtils.java b/src/java/org/apache/commons/lang/SystemUtils.java
+index bba319f81..edada2dfc 100644
+--- a/src/java/org/apache/commons/lang/SystemUtils.java
++++ b/src/java/org/apache/commons/lang/SystemUtils.java
+@@ -64,11 +64,11 @@ package org.apache.commons.lang;
+  * @author Based on code from Lucene
+  * @author Stephen Colebourne
+  * @author <a href="mailto:sdowney@panix.com">Steve Downey</a>
+- * @author Gary Gregory
++ * @author <a href="mailto:ggregory@seagullsw.com">Gary Gregory</a>
+  * @author Michael Becke
+  * @author Tetsuya Kaneuchi
+  * @since 1.0
+- * @version $Id: SystemUtils.java,v 1.22 2003/08/22 03:06:36 ggregory Exp $
++ * @version $Id: SystemUtils.java,v 1.21 2003/08/21 15:52:54 ggregory Exp $
+  */
+ public class SystemUtils {
+ 
+@@ -463,8 +463,6 @@ public class SystemUtils {
+      * </ul>
+      *
+      * <p>The field will return zero if {@link #JAVA_VERSION} is <code>null</code>.</p>
+-     * 
+-     * @since 2.0
+      */
+     public static final float JAVA_VERSION_FLOAT = getJavaVersionAsFloat();
+ 
+@@ -478,8 +476,6 @@ public class SystemUtils {
+      * </ul>
+      *
+      * <p>The field will return zero if {@link #JAVA_VERSION} is <code>null</code>.</p>
+-     * 
+-     * @since 2.0
+      */
+     public static final int JAVA_VERSION_INT = getJavaVersionAsInt();
+ 
+diff --git a/src/java/org/apache/commons/lang/builder/StandardToStringStyle.java b/src/java/org/apache/commons/lang/builder/StandardToStringStyle.java
+index 3eca78d1f..4140e5194 100644
+--- a/src/java/org/apache/commons/lang/builder/StandardToStringStyle.java
++++ b/src/java/org/apache/commons/lang/builder/StandardToStringStyle.java
+@@ -65,9 +65,8 @@ package org.apache.commons.lang.builder;
+  *
+  * @author Stephen Colebourne
+  * @author Pete Gieser
+- * @author Gary Gregory
+  * @since 1.0
+- * @version $Id: StandardToStringStyle.java,v 1.15 2003/08/22 03:06:36 ggregory Exp $
++ * @version $Id: StandardToStringStyle.java,v 1.14 2003/08/21 15:52:54 ggregory Exp $
+  */
+ public class StandardToStringStyle extends ToStringStyle {
+     
+@@ -391,7 +390,6 @@ public class StandardToStringStyle extends ToStringStyle {
+      * of each buffer.</p>
+      * 
+      * @return the fieldSeparatorAtStart flag
+-     * @since 2.0
+      */
+     public boolean isFieldSeparatorAtStart() {
+         return super.isFieldSeparatorAtStart();
+diff --git a/src/java/org/apache/commons/lang/builder/ToStringStyle.java b/src/java/org/apache/commons/lang/builder/ToStringStyle.java
+index ff9229ff0..18866cddb 100644
+--- a/src/java/org/apache/commons/lang/builder/ToStringStyle.java
++++ b/src/java/org/apache/commons/lang/builder/ToStringStyle.java
+@@ -84,10 +84,10 @@ import org.apache.commons.lang.SystemUtils;
+  * the array length.</p>
+  *
+  * @author Stephen Colebourne
+- * @author Gary Gregory
++ * @author <a href="mailto:ggregory@seagullsw.com">Gary Gregory</a>
+  * @author Pete Gieser
+  * @since 1.0
+- * @version $Id: ToStringStyle.java,v 1.26 2003/08/22 03:06:36 ggregory Exp $
++ * @version $Id: ToStringStyle.java,v 1.25 2003/08/21 15:52:54 ggregory Exp $
+  */
+ public abstract class ToStringStyle implements Serializable {
+ 
+@@ -209,7 +209,6 @@ public abstract class ToStringStyle implements Serializable {
+      * 
+      * @param buffer  the <code>StringBuffer</code> to populate
+      * @param superToString  the <code>super.toString()</code>
+-     * @since 2.0
+      */
+     public void appendSuper(StringBuffer buffer, String superToString) {
+         appendToString(buffer, superToString);

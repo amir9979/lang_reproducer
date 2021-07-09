@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.java b/src/main/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.java
+index dd86e3afb..a41791532 100644
+--- a/src/main/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.java
++++ b/src/main/java/org/apache/commons/lang3/builder/MultilineRecursiveToStringStyle.java
+@@ -63,7 +63,7 @@ import org.apache.commons.lang3.SystemUtils;
+  * @since 3.4
+  * @version $Id$
+  */
+-public class MultilineRecursiveToStringStyle extends RecursiveToStringStyle {
++class MultilineRecursiveToStringStyle extends RecursiveToStringStyle {
+ 
+     /**
+      * Required for serialization support.

@@ -1,0 +1,20 @@
+diff --git a/src/java/org/apache/commons/lang/builder/ToStringStyle.java b/src/java/org/apache/commons/lang/builder/ToStringStyle.java
+index 55d48f3b9..d40710548 100644
+--- a/src/java/org/apache/commons/lang/builder/ToStringStyle.java
++++ b/src/java/org/apache/commons/lang/builder/ToStringStyle.java
+@@ -313,7 +313,6 @@ public abstract class ToStringStyle implements Serializable {
+ 
+     /**
+      * <p>Append to the <code>toString</code> the superclass toString.</p>
+-     * <p>NOTE: It assumes that the toString has been created from the same ToStringStyle. </p>
+      * 
+      * <p>A <code>null</code> <code>superToString</code> is ignored.</p>
+      * 
+@@ -327,7 +326,6 @@ public abstract class ToStringStyle implements Serializable {
+ 
+     /**
+      * <p>Append to the <code>toString</code> another toString.</p>
+-     * <p>NOTE: It assumes that the toString has been created from the same ToStringStyle. </p>
+      * 
+      * <p>A <code>null</code> <code>toString</code> is ignored.</p>
+      * 

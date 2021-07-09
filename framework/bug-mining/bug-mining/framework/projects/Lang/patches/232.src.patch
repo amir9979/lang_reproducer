@@ -1,0 +1,56 @@
+diff --git a/src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java b/src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java
+index 9bdc7aa86..b2ffa531e 100644
+--- a/src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java
++++ b/src/main/java/org/apache/commons/lang3/reflect/MethodUtils.java
+@@ -86,7 +86,11 @@ public class MethodUtils {
+         if (args == null) {
+             args = ArrayUtils.EMPTY_OBJECT_ARRAY;
+         }
+-        Class<?>[] parameterTypes = ClassUtils.toClass(args);
++        int arguments = args.length;
++        Class<?>[] parameterTypes = new Class[arguments];
++        for (int i = 0; i < arguments; i++) {
++            parameterTypes[i] = args[i].getClass();
++        }
+         return invokeMethod(object, methodName, args, parameterTypes);
+     }
+ 
+@@ -153,7 +157,11 @@ public class MethodUtils {
+         if (args == null) {
+             args = ArrayUtils.EMPTY_OBJECT_ARRAY;
+         }
+-        Class<?>[] parameterTypes = ClassUtils.toClass(args);
++        int arguments = args.length;
++        Class<?>[] parameterTypes = new Class[arguments];
++        for (int i = 0; i < arguments; i++) {
++            parameterTypes[i] = args[i].getClass();
++        }
+         return invokeExactMethod(object, methodName, args, parameterTypes);
+     }
+ 
+@@ -263,7 +271,11 @@ public class MethodUtils {
+         if (args == null) {
+             args = ArrayUtils.EMPTY_OBJECT_ARRAY;
+         }
+-        Class<?>[] parameterTypes = ClassUtils.toClass(args);
++        int arguments = args.length;
++        Class<?>[] parameterTypes = new Class[arguments];
++        for (int i = 0; i < arguments; i++) {
++            parameterTypes[i] = args[i].getClass();
++        }
+         return invokeStaticMethod(cls, methodName, args, parameterTypes);
+     }
+ 
+@@ -332,7 +344,11 @@ public class MethodUtils {
+         if (args == null) {
+             args = ArrayUtils.EMPTY_OBJECT_ARRAY;
+         }
+-        Class<?>[] parameterTypes = ClassUtils.toClass(args);
++        int arguments = args.length;
++        Class<?>[] parameterTypes = new Class[arguments];
++        for (int i = 0; i < arguments; i++) {
++            parameterTypes[i] = args[i].getClass();
++        }
+         return invokeExactStaticMethod(cls, methodName, args, parameterTypes);
+     }
+ 

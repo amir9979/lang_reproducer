@@ -1,0 +1,16 @@
+diff --git a/src/test/org/apache/commons/lang/StringUtilsStartsEndsWithTest.java b/src/test/org/apache/commons/lang/StringUtilsStartsEndsWithTest.java
+index 6d1e48f4d..1c7fdeef5 100644
+--- a/src/test/org/apache/commons/lang/StringUtilsStartsEndsWithTest.java
++++ b/src/test/org/apache/commons/lang/StringUtilsStartsEndsWithTest.java
+@@ -149,11 +149,6 @@ public class StringUtilsStartsEndsWithTest extends TestCase {
+         assertTrue("endsWithIgnoreCase(FOOBAR, BAR)", StringUtils.endsWithIgnoreCase(FOOBAR, BAR));
+         assertTrue("endsWithIgnoreCase(foobar, BAR)", StringUtils.endsWithIgnoreCase(foobar, BAR));
+         assertTrue("endsWithIgnoreCase(FOOBAR, bar)", StringUtils.endsWithIgnoreCase(FOOBAR, bar));
+-
+-        // javadoc
+-        assertTrue(StringUtils.endsWithIgnoreCase("abcdef", "def"));
+-        assertTrue(StringUtils.endsWithIgnoreCase("ABCDEF", "def"));
+-        assertFalse(StringUtils.endsWithIgnoreCase("ABCDEF", "cde"));
+     }
+ 
+ }

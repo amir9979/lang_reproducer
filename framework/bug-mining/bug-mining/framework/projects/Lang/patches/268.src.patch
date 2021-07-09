@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+index b9bb413b5..8fa03289b 100644
+--- a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
++++ b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+@@ -497,7 +497,7 @@ public class FastDateParser implements DateParser, Serializable {
+      */
+     private Strategy getLocaleSpecificStrategy(final int field, final Calendar definingCalendar) {
+         final ConcurrentMap<Locale,Strategy> cache = getCache(field);
+-        Strategy strategy= cache.get(locale);
++        Strategy strategy= cache.get(Integer.valueOf(field));
+         if(strategy==null) {
+             strategy= field==Calendar.ZONE_OFFSET
+                     ? new TimeZoneStrategy(locale)

@@ -1,0 +1,208 @@
+diff --git a/src/java/org/apache/commons/lang/StringEscapeUtils.java b/src/java/org/apache/commons/lang/StringEscapeUtils.java
+index 845e8cddd..8e43499a4 100644
+--- a/src/java/org/apache/commons/lang/StringEscapeUtils.java
++++ b/src/java/org/apache/commons/lang/StringEscapeUtils.java
+@@ -571,6 +571,7 @@ public class StringEscapeUtils {
+      *
+      * @param writer  the writer receiving the unescaped string, not null
+      * @param str  the <code>String</code> to escape, may be null
++     * @return a new escaped <code>String</code>, <code>null</code> if null string input
+      * @throws IllegalArgumentException if the writer is null
+      * @throws IOException if there is a problem writing
+      * @see #unescapeXml(java.lang.String)
+@@ -623,6 +624,7 @@ public class StringEscapeUtils {
+      *
+      * @param writer  the writer receiving the unescaped string, not null
+      * @param str  the <code>String</code> to unescape, may be null
++     * @return a new unescaped <code>String</code>, <code>null</code> if null string input
+      * @throws IllegalArgumentException if the writer is null
+      * @throws IOException if there is a problem writing
+      * @see #escapeXml(String)
+diff --git a/src/java/org/apache/commons/lang/enum/Enum.java b/src/java/org/apache/commons/lang/enum/Enum.java
+index 3facbade9..907f69b37 100644
+--- a/src/java/org/apache/commons/lang/enum/Enum.java
++++ b/src/java/org/apache/commons/lang/enum/Enum.java
+@@ -587,12 +587,6 @@ public abstract class Enum implements Comparable, Serializable {
+         return iName.compareTo(((Enum) other).iName);
+     }
+ 
+-    /**
+-     * <p>Use reflection to return an objects class name.</p>
+-     *
+-     * @param other The object to determine the class name for
+-     * @return The class name
+-     */
+     private String getNameInOtherClassLoader(Object other) {
+         try {
+             Method mth = other.getClass().getMethod("getName", null);
+diff --git a/src/java/org/apache/commons/lang/enums/Enum.java b/src/java/org/apache/commons/lang/enums/Enum.java
+index 6d7840111..9b2d4fe34 100644
+--- a/src/java/org/apache/commons/lang/enums/Enum.java
++++ b/src/java/org/apache/commons/lang/enums/Enum.java
+@@ -584,12 +584,6 @@ public abstract class Enum implements Comparable, Serializable {
+         return iName.compareTo(((Enum) other).iName);
+     }
+ 
+-    /**
+-     * <p>Use reflection to return an objects class name.</p>
+-     *
+-     * @param other The object to determine the class name for
+-     * @return The class name
+-     */
+     private String getNameInOtherClassLoader(Object other) {
+         try {
+             Method mth = other.getClass().getMethod("getName", null);
+diff --git a/src/java/org/apache/commons/lang/text/StrBuilder.java b/src/java/org/apache/commons/lang/text/StrBuilder.java
+index 5002b0663..7c3eb2250 100644
+--- a/src/java/org/apache/commons/lang/text/StrBuilder.java
++++ b/src/java/org/apache/commons/lang/text/StrBuilder.java
+@@ -2187,17 +2187,16 @@ public class StrBuilder implements Cloneable {
+         /** The last mark position. */
+         private int mark;
+ 
+-        /** {@inheritDoc} */
+         StrBuilderReader() {
+             super();
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public void close() {
+             // do nothing
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public int read() {
+             if (ready() == false) {
+                 return -1;
+@@ -2205,7 +2204,7 @@ public class StrBuilder implements Cloneable {
+             return charAt(pos++);
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public int read(char b[], int off, int len) {
+             if (off < 0 || len < 0 || off > b.length ||
+                     (off + len) > b.length || (off + len) < 0) {
+@@ -2225,7 +2224,6 @@ public class StrBuilder implements Cloneable {
+             return len;
+         }
+ 
+-        /** {@inheritDoc} */
+         public long skip(long n) {
+             if (pos + n > size()) {
+                 n = size() - pos;
+@@ -2237,22 +2235,22 @@ public class StrBuilder implements Cloneable {
+             return n;
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public boolean ready() {
+             return pos < size();
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public boolean markSupported() {
+             return true;
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public void mark(int readAheadLimit) {
+             mark = pos;
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public void reset() {
+             pos = mark;
+         }
+@@ -2263,43 +2261,41 @@ public class StrBuilder implements Cloneable {
+      * Inner class to allow StrBuilder to operate as a writer.
+      */
+     class StrBuilderWriter extends Writer {
+-
+-        /** {@inheritDoc} */
+         StrBuilderWriter() {
+             super();
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public void close() {
+             // do nothing
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public void flush() {
+             // do nothing
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public void write(int c) {
+             StrBuilder.this.append((char) c);
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public void write(char[] cbuf) {
+             StrBuilder.this.append(cbuf);
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public void write(char[] cbuf, int off, int len) {
+             StrBuilder.this.append(cbuf, off, len);
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public void write(String str) {
+             StrBuilder.this.append(str);
+         }
+ 
+-        /** {@inheritDoc} */
++        /** @inheritdoc */
+         public void write(String str, int off, int len) {
+             StrBuilder.this.append(str, off, len);
+         }
+diff --git a/src/java/org/apache/commons/lang/text/VariableFormatter.java b/src/java/org/apache/commons/lang/text/VariableFormatter.java
+index cb9da27b9..068d5ef88 100644
+--- a/src/java/org/apache/commons/lang/text/VariableFormatter.java
++++ b/src/java/org/apache/commons/lang/text/VariableFormatter.java
+@@ -205,17 +205,6 @@ public class VariableFormatter {
+             return newToken(VariableParser.TEXT_TOKEN, aStartIndex, aLength);
+         }
+ 
+-        /**
+-         * Creates a new token of the specified type.
+-         * 
+-         * @param type
+-         *            The token type
+-         * @param beginIndex
+-         *            The token starting index
+-         * @param length
+-         *            The token length
+-         * @return a new token
+-         */
+         private static FieldPosition newToken(int type, int beginIndex, int length) {
+             FieldPosition fp = new FieldPosition(type);
+             fp.setBeginIndex(beginIndex);
+diff --git a/src/java/org/apache/commons/lang/time/DurationFormatUtils.java b/src/java/org/apache/commons/lang/time/DurationFormatUtils.java
+index 3c3f3ddbf..05fb460c1 100644
+--- a/src/java/org/apache/commons/lang/time/DurationFormatUtils.java
++++ b/src/java/org/apache/commons/lang/time/DurationFormatUtils.java
+@@ -622,8 +622,6 @@ public class DurationFormatUtils {
+          * Returns a hashcode for the token equal to the 
+          * hashcode for the token's value. Thus 'TT' and 'TTTT' 
+          * will have the same hashcode. 
+-         *
+-         * @return The hashcode for the token
+          */
+         public int hashCode() {
+             return this.value.hashCode();

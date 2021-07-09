@@ -1,0 +1,23 @@
+diff --git a/src/main/java/org/apache/commons/lang3/SystemUtils.java b/src/main/java/org/apache/commons/lang3/SystemUtils.java
+index ae87e7c30..0914b4db8 100644
+--- a/src/main/java/org/apache/commons/lang3/SystemUtils.java
++++ b/src/main/java/org/apache/commons/lang3/SystemUtils.java
+@@ -1223,18 +1223,6 @@ public class SystemUtils {
+      */
+     public static final boolean IS_OS_WINDOWS_7 = getOSMatches(OS_NAME_WINDOWS_PREFIX, "6.1");
+ 
+-    /**
+-     * <p>
+-     * Is {@code true} if this is Windows 8.
+-     * </p>
+-     * <p>
+-     * The field will return {@code false} if {@code OS_NAME} is {@code null}.
+-     * </p>
+-     *
+-     * @since 3.2
+-     */
+-    public static final boolean IS_OS_WINDOWS_8 = getOSMatches(OS_NAME_WINDOWS_PREFIX, "6.2");
+-
+     /**
+      * <p>
+      * Gets the Java home directory as a {@code File}.

@@ -1,0 +1,40 @@
+diff --git a/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java b/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java
+index 291591344..5b7fc257d 100644
+--- a/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java
++++ b/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java
+@@ -265,22 +265,23 @@ public class FastDatePrinterTest {
+         final String[] availableZones = TimeZone.getAvailableIDs();
+         final TimeZone currentZone = TimeZone.getDefault();
+         
++        TimeZone anotherZone = null;
+         for (final String zone : availableZones) {
+             if (!zone.equals(currentZone.getID())) {
+-                TimeZone anotherZone = TimeZone.getTimeZone(zone);
+-
+-                assertNotNull("Cannot find another timezone", anotherZone);
+-                
+-                final String pattern = "h:mma z";
+-                final Calendar cal = Calendar.getInstance(anotherZone);
+-                
+-                final SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+-                sdf.setTimeZone(anotherZone);
+-                final String expectedValue = sdf.format(cal.getTime());
+-                final String actualValue = FastDateFormat.getInstance(pattern).format(cal);
+-                assertEquals(expectedValue, actualValue);
++                anotherZone = TimeZone.getTimeZone(zone);
+             }
+         }
++        
++        assertNotNull("Cannot find another timezone", anotherZone);
++        
++        final String pattern = "h:mma z";
++        final Calendar cal = Calendar.getInstance(anotherZone);
++        
++        final SimpleDateFormat sdf = new SimpleDateFormat(pattern);
++        sdf.setTimeZone(anotherZone);
++        final String expectedValue = sdf.format(cal.getTime());
++        final String actualValue = FastDateFormat.getInstance(pattern).format(cal);
++        assertEquals(expectedValue, actualValue);
+     }
+     
+     @Test

@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java b/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java
+index 91313c6a4..1a750e97d 100644
+--- a/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java
++++ b/src/main/java/org/apache/commons/lang3/reflect/TypeUtils.java
+@@ -1626,7 +1626,7 @@ public class TypeUtils {
+             return equals(getImplicitLowerBounds(w), getImplicitLowerBounds(other))
+                 && equals(getImplicitUpperBounds(w), getImplicitUpperBounds(other));
+         }
+-        return false;
++        return true;
+     }
+ 
+     /**

@@ -1,0 +1,25 @@
+diff --git a/src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java b/src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java
+index 9523858db..86c5411b4 100644
+--- a/src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java
++++ b/src/main/java/org/apache/commons/lang3/reflect/MemberUtils.java
+@@ -255,10 +255,6 @@ abstract class MemberUtils {
+ 
+     private static boolean isMatchingExecutable(final Executable method, final Class<?>[] parameterTypes) {
+         final Class<?>[] methodParameterTypes = method.getParameterTypes();
+-        if (ClassUtils.isAssignable(parameterTypes, methodParameterTypes, true)) {
+-            return true;
+-        }
+-
+         if (method.isVarArgs()) {
+             int i;
+             for (i = 0; i < methodParameterTypes.length - 1 && i < parameterTypes.length; i++) {
+@@ -274,8 +270,7 @@ abstract class MemberUtils {
+             }
+             return true;
+         }
+-
+-        return false;
++        return ClassUtils.isAssignable(parameterTypes, methodParameterTypes, true);
+     }
+ 
+     /**

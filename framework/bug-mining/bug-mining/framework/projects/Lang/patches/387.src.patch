@@ -1,0 +1,357 @@
+diff --git a/src/main/java/org/apache/commons/lang3/time/CalendarReflection.java b/src/main/java/org/apache/commons/lang3/time/CalendarReflection.java
+deleted file mode 100644
+index 79ebb3f98..000000000
+--- a/src/main/java/org/apache/commons/lang3/time/CalendarReflection.java
++++ /dev/null
+@@ -1,99 +0,0 @@
+-/*
+- * Licensed to the Apache Software Foundation (ASF) under one or more
+- * contributor license agreements.  See the NOTICE file distributed with
+- * this work for additional information regarding copyright ownership.
+- * The ASF licenses this file to You under the Apache License, Version 2.0
+- * (the "License"); you may not use this file except in compliance with
+- * the License.  You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-package org.apache.commons.lang3.time;
+-
+-import java.lang.reflect.Method;
+-import java.util.Calendar;
+-import java.util.GregorianCalendar;
+-
+-import org.apache.commons.lang3.exception.ExceptionUtils;
+-
+-/**
+- * Use reflection to access java 1.7 methods in Calendar.  This allows compilation with 1.6 compiler.
+- */
+-class CalendarReflection {
+-
+-    private static final Method IS_WEEK_DATE_SUPPORTED = getCalendarMethod("isWeekDateSupported");
+-    private static final Method GET_WEEK_YEAR = getCalendarMethod("getWeekYear");
+-
+-    private static Method getCalendarMethod(String methodName, Class<?>... argTypes) {
+-        try {
+-            Method m = Calendar.class.getMethod(methodName, argTypes);
+-            return m;
+-        } catch (Exception e) {
+-            return null;
+-        }
+-    }
+-
+-    /**
+-     * Does this calendar instance support week date?
+-     * @param calendar The calendar instance.
+-     * @return false, if runtime is less than java 1.7; otherwise, the result of calendar.isWeekDateSupported().
+-     */
+-    static boolean isWeekDateSupported(Calendar calendar) {
+-        try {
+-            return IS_WEEK_DATE_SUPPORTED!=null && ((Boolean)IS_WEEK_DATE_SUPPORTED.invoke(calendar)).booleanValue();
+-        } catch (Exception e) {
+-            return ExceptionUtils.<Boolean>rethrow(e);
+-        }
+-    }
+-
+-    /**
+-     * Invoke getWeekYear() method of calendar instance.
+-     * <p>
+-     * If runtime is 1.7 or better and calendar instance support week year,
+-     * return the value from invocation of getWeekYear().
+-     * <p>
+-     * If runtime is less than 1.7, and calendar is an instance of
+-     * GregorianCalendar, return an approximation of the week year.
+-     * (Approximation is good for all years after the Julian to Gregorian
+-     * cutover.)
+-     * <p>
+-     * Otherwise, return the calendar instance year value.
+-     *
+-     * @param calendar The calendar instance.
+-     * @return the week year or year value.
+-     */
+-    public static int getWeekYear(Calendar calendar) {
+-        try {
+-            if (isWeekDateSupported(calendar)) {
+-                return (Integer) GET_WEEK_YEAR.invoke(calendar);
+-            }
+-        } catch (Exception e) {
+-            return ExceptionUtils.<Integer> rethrow(e);
+-        }
+-
+-        int year = calendar.get(Calendar.YEAR);
+-        if (IS_WEEK_DATE_SUPPORTED == null && calendar instanceof GregorianCalendar) {
+-            // not perfect, won't work before gregorian cutover
+-            // good enough for most business use.
+-            switch (calendar.get(Calendar.MONTH)) {
+-            case Calendar.JANUARY:
+-                if (calendar.get(Calendar.WEEK_OF_YEAR) >= 52) {
+-                    --year;
+-                }
+-                break;
+-            case Calendar.DECEMBER:
+-                if (calendar.get(Calendar.WEEK_OF_YEAR) == 1) {
+-                    ++year;
+-                }
+-                break;
+-            }
+-        }
+-        return year;
+-    }
+-}
+diff --git a/src/main/java/org/apache/commons/lang3/time/DateParser.java b/src/main/java/org/apache/commons/lang3/time/DateParser.java
+index c91f9a2df..120c4abb9 100644
+--- a/src/main/java/org/apache/commons/lang3/time/DateParser.java
++++ b/src/main/java/org/apache/commons/lang3/time/DateParser.java
+@@ -18,7 +18,6 @@ package org.apache.commons.lang3.time;
+ 
+ import java.text.ParseException;
+ import java.text.ParsePosition;
+-import java.util.Calendar;
+ import java.util.Date;
+ import java.util.Locale;
+ import java.util.TimeZone;
+@@ -54,21 +53,6 @@ public interface DateParser {
+      */
+     Date parse(String source, ParsePosition pos);
+ 
+-    /**
+-     * Parse a formatted date string according to the format.  Updates the Calendar with parsed fields.
+-     * Upon success, the ParsePosition index is updated to indicate how much of the source text was consumed.
+-     * Not all source text needs to be consumed.  Upon parse failure, ParsePosition error index is updated to
+-     * the offset of the source text which does not match the supplied format.
+-     *
+-     * @param source The text to parse.
+-     * @param pos On input, the position in the source to start parsing, on output, updated position.
+-     * @param calendar The calendar into which to set parsed fields.
+-     * @return true, if source has been parsed (pos parsePosition is updated); otherwise false (and pos errorIndex is updated)
+-     * @throws IllegalArgumentException when Calendar has been set to be not lenient, and a parsed field is
+-     * out of range.
+-     */
+-    boolean parse(String source, ParsePosition pos, Calendar calendar);
+-
+     // Accessors
+     //-----------------------------------------------------------------------
+     /**
+diff --git a/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java b/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java
+index c2907b274..abb51987b 100644
+--- a/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java
++++ b/src/main/java/org/apache/commons/lang3/time/FastDateFormat.java
+@@ -550,16 +550,7 @@ public class FastDateFormat extends Format implements DateParser, DatePrinter {
+      */
+     @Override
+     public Date parse(final String source, final ParsePosition pos) {
+-        return parser.parse(source, pos);
+-    }
+-
+-    /*
+-     * (non-Javadoc)
+-     * @see org.apache.commons.lang3.time.DateParser#parse(java.lang.String, java.text.ParsePosition, java.util.Calendar)
+-     */
+-    @Override
+-    public boolean parse(final String source, final ParsePosition pos, final Calendar calendar) {
+-        return parser.parse(source, pos, calendar);
++            return parser.parse(source, pos);
+     }
+ 
+     /* (non-Javadoc)
+diff --git a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+index 55fb30f35..a1fc82791 100644
+--- a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
++++ b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+@@ -170,7 +170,7 @@ public class FastDateParser implements DateParser, Serializable {
+     //-----------------------------------------------------------------------
+ 
+     /**
+-     * Struct to hold strategy and field width
++     * Struct to hold strategy and filed width 
+      */
+     private static class StrategyAndWidth {
+         final Strategy strategy;
+@@ -401,12 +401,12 @@ public class FastDateParser implements DateParser, Serializable {
+ 
+         return parse(source, pos, cal) ?cal.getTime() :null;
+     }
+-
++    
+     /**
+-     * Parse a formatted date string according to the format.  Updates the Calendar with parsed fields.
++     * Parse a formatted date string according to the format.  Updates the Calendar with parsed fields.  
+      * Upon success, the ParsePosition index is updated to indicate how much of the source text was consumed.
+      * Not all source text needs to be consumed.  Upon parse failure, ParsePosition error index is updated to
+-     * the offset of the source text which does not match the supplied format.
++     * the offset of the source text which does not match the supplied format.  
+      * 
+      * @param source The text to parse.
+      * @param pos On input, the position in the source to start parsing, on output, updated position.
+@@ -415,18 +415,17 @@ public class FastDateParser implements DateParser, Serializable {
+      * @throws IllegalArgumentException when Calendar has been set to be not lenient, and a parsed field is
+      * out of range.
+      */
+-    @Override
+-    public boolean parse(final String source, final ParsePosition pos, final Calendar calendar) {
+-        ListIterator<StrategyAndWidth> lt = patterns.listIterator();
+-        while(lt.hasNext()) {
+-            StrategyAndWidth pattern = lt.next();
+-            int maxWidth = pattern.getMaxWidth(lt);
+-            if(!pattern.strategy.parse(this, calendar, source, pos, maxWidth)) {
+-                return false;
+-            }
+-        }
+-        return true;
+-    }
++     public boolean parse(final String source, final ParsePosition pos, final Calendar calendar) {
++         ListIterator<StrategyAndWidth> lt = patterns.listIterator();
++         while(lt.hasNext()) {
++             StrategyAndWidth pattern = lt.next();
++             int maxWidth = pattern.getMaxWidth(lt);
++             if(!pattern.strategy.parse(this, calendar, source, pos, maxWidth)) {
++                 return false;
++             }
++         }
++         return true;
++     }
+ 
+     // Support for strategies
+     //-----------------------------------------------------------------------
+@@ -607,7 +606,6 @@ public class FastDateParser implements DateParser, Serializable {
+         case 'w':
+             return WEEK_OF_YEAR_STRATEGY;
+         case 'y':
+-        case 'Y':
+             return width>2 ?LITERAL_YEAR_STRATEGY :ABBREVIATED_YEAR_STRATEGY;
+         case 'X':
+             return ISO8601TimeZoneStrategy.getStrategy(width);
+diff --git a/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java b/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java
+index f0445525a..4f84cc774 100644
+--- a/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java
++++ b/src/main/java/org/apache/commons/lang3/time/FastDatePrinter.java
+@@ -25,6 +25,7 @@ import java.text.FieldPosition;
+ import java.util.ArrayList;
+ import java.util.Calendar;
+ import java.util.Date;
++import java.util.GregorianCalendar;
+ import java.util.List;
+ import java.util.Locale;
+ import java.util.TimeZone;
+@@ -210,15 +211,11 @@ public class FastDatePrinter implements DatePrinter, Serializable {
+                 rule = new TextField(Calendar.ERA, ERAs);
+                 break;
+             case 'y': // year (number)
+-            case 'Y': // week year
+                 if (tokenLen == 2) {
+                     rule = TwoDigitYearField.INSTANCE;
+                 } else {
+                     rule = selectNumberRule(Calendar.YEAR, tokenLen < 4 ? 4 : tokenLen);
+                 }
+-                if (c == 'Y') {
+-                    rule = new WeekYear((NumberRule) rule);
+-                }
+                 break;
+             case 'M': // month in year (text and number)
+                 if (tokenLen >= 4) {
+@@ -441,7 +438,7 @@ public class FastDatePrinter implements DatePrinter, Serializable {
+      */
+     @Override
+     public String format(final long millis) {
+-        final Calendar c = newCalendar();
++        final Calendar c = newCalendar();  // hard code GregorianCalendar
+         c.setTimeInMillis(millis);
+         return applyRulesToString(c);
+     }
+@@ -456,11 +453,12 @@ public class FastDatePrinter implements DatePrinter, Serializable {
+     }
+ 
+     /**
+-     * Creation method for new calender instances.
++     * Creation method for ne calender instances.
+      * @return a new Calendar instance.
+      */
+-    private Calendar newCalendar() {
+-        return Calendar.getInstance(mTimeZone, mLocale);
++    private GregorianCalendar newCalendar() {
++        // hard code GregorianCalendar
++        return new GregorianCalendar(mTimeZone, mLocale);
+     }
+ 
+     /* (non-Javadoc)
+@@ -468,7 +466,7 @@ public class FastDatePrinter implements DatePrinter, Serializable {
+      */
+     @Override
+     public String format(final Date date) {
+-        final Calendar c = newCalendar();
++        final Calendar c = newCalendar();  // hard code GregorianCalendar
+         c.setTime(date);
+         return applyRulesToString(c);
+     }
+@@ -494,7 +492,7 @@ public class FastDatePrinter implements DatePrinter, Serializable {
+      */
+     @Override
+     public StringBuffer format(final Date date, final StringBuffer buf) {
+-        final Calendar c = newCalendar();
++        final Calendar c = newCalendar();  // hard code GregorianCalendar
+         c.setTime(date);
+         return applyRules(c, buf);
+     }
+@@ -521,7 +519,7 @@ public class FastDatePrinter implements DatePrinter, Serializable {
+      */
+     @Override
+     public <B extends Appendable> B format(final Date date, final B buf) {
+-        final Calendar c = newCalendar();
++        final Calendar c = newCalendar();  // hard code GregorianCalendar
+         c.setTime(date);
+         return applyRules(c, buf);
+     }
+@@ -530,13 +528,9 @@ public class FastDatePrinter implements DatePrinter, Serializable {
+      * @see org.apache.commons.lang3.time.DatePrinter#format(java.util.Calendar, java.lang.Appendable)
+      */
+     @Override
+-    public <B extends Appendable> B format(Calendar calendar, final B buf) {
++    public <B extends Appendable> B format(final Calendar calendar, final B buf) {
+         // do not pass in calendar directly, this will cause TimeZone of FastDatePrinter to be ignored
+-        if(!calendar.getTimeZone().equals(mTimeZone)) {
+-            calendar = (Calendar)calendar.clone();
+-            calendar.setTimeZone(mTimeZone);
+-        }
+-        return applyRules(calendar, buf);
++        return format(calendar.getTime(), buf);
+     }
+ 
+     /**
+@@ -1208,32 +1202,6 @@ public class FastDatePrinter implements DatePrinter, Serializable {
+         }
+     }
+ 
+-    /**
+-     * <p>Inner class to output the numeric day in week.</p>
+-     */
+-    private static class WeekYear implements NumberRule {
+-        private final NumberRule mRule;
+-
+-        WeekYear(final NumberRule rule) {
+-            mRule = rule;
+-        }
+-
+-        @Override
+-        public int estimateLength() {
+-            return mRule.estimateLength();
+-        }
+-
+-        @Override
+-        public void appendTo(final Appendable buffer, final Calendar calendar) throws IOException {
+-            mRule.appendTo(buffer, CalendarReflection.getWeekYear(calendar));
+-        }
+-
+-        @Override
+-        public void appendTo(final Appendable buffer, final int value) throws IOException {
+-            mRule.appendTo(buffer, value);
+-        }
+-    }
+-
+     //-----------------------------------------------------------------------
+ 
+     private static final ConcurrentMap<TimeZoneDisplayKey, String> cTimeZoneDisplayCache =

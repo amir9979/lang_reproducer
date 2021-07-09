@@ -1,0 +1,13 @@
+diff --git a/src/main/java/org/apache/commons/lang3/ArrayUtils.java b/src/main/java/org/apache/commons/lang3/ArrayUtils.java
+index 3d3b76b64..644c0b880 100644
+--- a/src/main/java/org/apache/commons/lang3/ArrayUtils.java
++++ b/src/main/java/org/apache/commons/lang3/ArrayUtils.java
+@@ -4008,7 +4008,7 @@ public class ArrayUtils {
+     public static <T> T[] add(final T[] array, final T element) {
+         Class<?> type;
+         if (array != null){
+-            type = array.getClass().getComponentType();
++            type = array.getClass();
+         } else if (element != null) {
+             type = element.getClass();
+         } else {

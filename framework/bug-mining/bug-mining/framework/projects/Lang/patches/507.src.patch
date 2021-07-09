@@ -1,0 +1,14 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index adbe262ae..72f401950 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -233,8 +233,7 @@ public class StringUtils {
+      * <p>Checks if any of the CharSequences are empty ("") or null.</p>
+      *
+      * <pre>
+-     * StringUtils.isAnyEmpty((String) null)    = true
+-     * StringUtils.isAnyEmpty((String[]) null)  = false
++     * StringUtils.isAnyEmpty(null)             = true
+      * StringUtils.isAnyEmpty(null, "foo")      = true
+      * StringUtils.isAnyEmpty("", "bar")        = true
+      * StringUtils.isAnyEmpty("bob", "")        = true

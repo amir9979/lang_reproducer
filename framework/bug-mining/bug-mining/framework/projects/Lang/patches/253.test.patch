@@ -1,0 +1,18 @@
+diff --git a/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java b/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
+index 86465b180..986360a89 100644
+--- a/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
+@@ -655,13 +655,6 @@ public class TypeUtilsTest<B> {
+         Assert.assertEquals(types[6], TypeUtils.getArrayComponentType(types[13]));
+     }
+ 
+-    @Test
+-    public void testLang820() throws Exception {
+-        Type[] typeArray = {String.class, String.class};
+-        Type[] expectedArray = {String.class};
+-        Assert.assertArrayEquals(expectedArray, TypeUtils.normalizeUpperBounds(typeArray));
+-    }
+-
+     public Iterable<? extends Map<Integer, ? extends Collection<?>>> iterable;
+ 
+     public static <G extends Comparable<G>> G stub() {

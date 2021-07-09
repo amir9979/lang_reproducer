@@ -1,0 +1,22 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index 6a78eb863..d22b9c071 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -4735,7 +4735,7 @@ public class StringUtils {
+      * StringUtils.center(null, *, *)     = null
+      * StringUtils.center("", 4, ' ')     = "    "
+      * StringUtils.center("ab", -1, ' ')  = "ab"
+-     * StringUtils.center("ab", 4, ' ')   = " ab "
++     * StringUtils.center("ab", 4, ' ')   = " ab"
+      * StringUtils.center("abcd", 2, ' ') = "abcd"
+      * StringUtils.center("a", 4, ' ')    = " a  "
+      * StringUtils.center("a", 4, 'y')    = "yayy"
+@@ -4773,7 +4773,7 @@ public class StringUtils {
+      * StringUtils.center(null, *, *)     = null
+      * StringUtils.center("", 4, " ")     = "    "
+      * StringUtils.center("ab", -1, " ")  = "ab"
+-     * StringUtils.center("ab", 4, " ")   = " ab "
++     * StringUtils.center("ab", 4, " ")   = " ab"
+      * StringUtils.center("abcd", 2, " ") = "abcd"
+      * StringUtils.center("a", 4, " ")    = " a  "
+      * StringUtils.center("a", 4, "yz")   = "yayz"

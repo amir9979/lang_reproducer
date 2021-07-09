@@ -1,0 +1,23 @@
+diff --git a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+index a9470d30e..2729c7a4e 100644
+--- a/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
++++ b/src/main/java/org/apache/commons/lang3/time/FastDateParser.java
+@@ -866,13 +866,11 @@ public class FastDateParser implements DateParser, Serializable {
+                         tzInfo = standard;
+                         break;
+                     }
+-                    if (zoneNames[i] != null) {
+-                        final String key = zoneNames[i].toLowerCase(locale);
+-                        // ignore the data associated with duplicates supplied in
+-                        // the additional names
+-                        if (sorted.add(key)) {
+-                            tzNames.put(key, tzInfo);
+-                        }
++                    final String key = zoneNames[i].toLowerCase(locale);
++                    // ignore the data associated with duplicates supplied in
++                    // the additional names
++                    if (sorted.add(key)) {
++                        tzNames.put(key, tzInfo);
+                     }
+                 }
+             }

@@ -1,0 +1,48 @@
+diff --git a/src/test/java/org/apache/commons/lang3/time/FastDateParserTest.java b/src/test/java/org/apache/commons/lang3/time/FastDateParserTest.java
+index 5c52a6ca2..4c18e64d9 100644
+--- a/src/test/java/org/apache/commons/lang3/time/FastDateParserTest.java
++++ b/src/test/java/org/apache/commons/lang3/time/FastDateParserTest.java
+@@ -702,19 +702,4 @@ public class FastDateParserTest {
+         cal.set(2015, Calendar.JULY, 4);
+         Assert.assertEquals(cal.getTime(), date);
+     }
+-
+-    @Test
+-    public void testDayNumberOfWeek() throws ParseException {
+-        final DateParser parser = getInstance("u");
+-        Calendar calendar = Calendar.getInstance();
+-
+-        calendar.setTime(parser.parse("1"));
+-        Assert.assertEquals(Calendar.MONDAY, calendar.get(Calendar.DAY_OF_WEEK));
+-
+-        calendar.setTime(parser.parse("6"));
+-        Assert.assertEquals(Calendar.SATURDAY, calendar.get(Calendar.DAY_OF_WEEK));
+-
+-        calendar.setTime(parser.parse("7"));
+-        Assert.assertEquals(Calendar.SUNDAY, calendar.get(Calendar.DAY_OF_WEEK));
+-    }
+ }
+diff --git a/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java b/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java
+index 1a2701ba5..5de68d65c 100644
+--- a/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java
++++ b/src/test/java/org/apache/commons/lang3/time/FastDatePrinterTest.java
+@@ -420,19 +420,4 @@ public class FastDatePrinterTest {
+         long epoch = date.getTime();
+         assertEquals(expected, format.format(epoch, sb).toString());
+     }
+-
+-    @Test
+-    public void testDayNumberOfWeek() {
+-        final DatePrinter printer = getInstance("u");
+-        Calendar calendar = Calendar.getInstance();
+-
+-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+-        assertEquals("1", printer.format(calendar.getTime()));
+-
+-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+-        assertEquals("6", printer.format(calendar.getTime()));
+-
+-        calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+-        assertEquals("7", printer.format(calendar.getTime()));
+-    }
+ }

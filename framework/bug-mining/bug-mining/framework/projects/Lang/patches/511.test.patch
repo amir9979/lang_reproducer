@@ -1,0 +1,16 @@
+diff --git a/src/test/java/org/apache/commons/lang3/text/WordUtilsTest.java b/src/test/java/org/apache/commons/lang3/text/WordUtilsTest.java
+index d99a97b1d..b311b3034 100644
+--- a/src/test/java/org/apache/commons/lang3/text/WordUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/text/WordUtilsTest.java
+@@ -427,11 +427,4 @@ public class WordUtilsTest {
+                 + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",70);
+     }
+ 
+-    @Test
+-    public void testLANG1397() throws Exception {
+-        // Prior to fix, this was throwing StringIndexOutOfBoundsException
+-        WordUtils.wrap("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+-            + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa "
+-            + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Integer.MAX_VALUE);
+-    }
+ }

@@ -1,0 +1,14 @@
+diff --git a/src/main/java/org/apache/commons/lang3/StringUtils.java b/src/main/java/org/apache/commons/lang3/StringUtils.java
+index 26245726d..360185c17 100644
+--- a/src/main/java/org/apache/commons/lang3/StringUtils.java
++++ b/src/main/java/org/apache/commons/lang3/StringUtils.java
+@@ -5233,9 +5233,6 @@ public class StringUtils {
+      * @see #repeat(String, int)
+      */
+     public static String repeat(final char ch, final int repeat) {
+-        if (repeat <= 0) {
+-            return EMPTY;
+-        }
+         final char[] buf = new char[repeat];
+         for (int i = repeat - 1; i >= 0; i--) {
+             buf[i] = ch;

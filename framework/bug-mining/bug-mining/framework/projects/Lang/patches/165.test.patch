@@ -1,0 +1,309 @@
+diff --git a/src/test/java/org/apache/commons/lang3/CharEncodingTest.java b/src/test/java/org/apache/commons/lang3/CharEncodingTest.java
+index 1eee1b3b7..b0ca6ca3f 100644
+--- a/src/test/java/org/apache/commons/lang3/CharEncodingTest.java
++++ b/src/test/java/org/apache/commons/lang3/CharEncodingTest.java
+@@ -19,8 +19,6 @@ package org.apache.commons.lang3;
+ 
+ import junit.framework.TestCase;
+ 
+-import static org.apache.commons.lang3.JavaVersion.*;
+-
+ /**
+  * Tests CharEncoding.
+  * 
+@@ -42,7 +40,7 @@ public class CharEncodingTest extends TestCase {
+     }
+ 
+     public void testMustBeSupportedJava1_3_1() {
+-        if (SystemUtils.isJavaVersionAtLeast(JAVA_1_3)) {
++        if (SystemUtils.isJavaVersionAtLeast(1.3f)) {
+             this.assertSupportedEncoding(CharEncoding.ISO_8859_1);
+             this.assertSupportedEncoding(CharEncoding.US_ASCII);
+             this.assertSupportedEncoding(CharEncoding.UTF_16);
+@@ -50,7 +48,7 @@ public class CharEncodingTest extends TestCase {
+             this.assertSupportedEncoding(CharEncoding.UTF_16LE);
+             this.assertSupportedEncoding(CharEncoding.UTF_8);
+         } else {
+-            this.warn("Java 1.3 tests not run since the current version is " + SystemUtils.JAVA_SPECIFICATION_VERSION);
++            this.warn("Java 1.3 tests not run since the current version is " + SystemUtils.JAVA_VERSION);
+         }
+     }
+ 
+@@ -68,12 +66,12 @@ public class CharEncodingTest extends TestCase {
+         // In this test, I simply deleted the encodings from the 1.3.1 list.
+         // The Javadoc do not specify which encodings are required.
+         //
+-        if (SystemUtils.isJavaVersionAtLeast(JAVA_1_1)) {
++        if (SystemUtils.isJavaVersionAtLeast(1.1f)) {
+             this.assertSupportedEncoding(CharEncoding.ISO_8859_1);
+             this.assertSupportedEncoding(CharEncoding.US_ASCII);
+             this.assertSupportedEncoding(CharEncoding.UTF_8);
+         } else {
+-            this.warn("Java 1.1 tests not run since the current version is " + SystemUtils.JAVA_SPECIFICATION_VERSION);
++            this.warn("Java 1.1 tests not run since the current version is " + SystemUtils.JAVA_VERSION);
+         }
+     }
+ 
+@@ -82,12 +80,12 @@ public class CharEncodingTest extends TestCase {
+         // In this test, I simply deleted the encodings from the 1.3.1 list.
+         // The Javadoc do not specify which encodings are required.
+         //
+-        if (SystemUtils.isJavaVersionAtLeast(JAVA_1_2)) {
++        if (SystemUtils.isJavaVersionAtLeast(1.2f)) {
+             this.assertSupportedEncoding(CharEncoding.ISO_8859_1);
+             this.assertSupportedEncoding(CharEncoding.US_ASCII);
+             this.assertSupportedEncoding(CharEncoding.UTF_8);
+         } else {
+-            this.warn("Java 1.2 tests not run since the current version is " + SystemUtils.JAVA_SPECIFICATION_VERSION);
++            this.warn("Java 1.2 tests not run since the current version is " + SystemUtils.JAVA_VERSION);
+         }
+     }
+ 
+diff --git a/src/test/java/org/apache/commons/lang3/ClassUtilsTest.java b/src/test/java/org/apache/commons/lang3/ClassUtilsTest.java
+index f66c0a5aa..3ec16f085 100644
+--- a/src/test/java/org/apache/commons/lang3/ClassUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/ClassUtilsTest.java
+@@ -27,8 +27,6 @@ import java.util.List;
+ import java.util.Map;
+ import java.util.Set;
+ 
+-import static org.apache.commons.lang3.JavaVersion.*;
+-
+ import junit.framework.TestCase;
+ 
+ /**
+@@ -267,7 +265,7 @@ public class ClassUtilsTest extends TestCase {
+         assertTrue(ClassUtils.isAssignable(array1s, array1s));
+         assertTrue(ClassUtils.isAssignable(array1s, array1));
+ 
+-        boolean autoboxing = SystemUtils.isJavaVersionAtLeast(JAVA_1_5);
++        boolean autoboxing = SystemUtils.isJavaVersionAtLeast(1.5f);
+ 
+         assertEquals(autoboxing, ClassUtils.isAssignable(arrayPrimitives, arrayWrappers));
+         assertEquals(autoboxing, ClassUtils.isAssignable(arrayWrappers, arrayPrimitives));
+@@ -342,7 +340,7 @@ public class ClassUtilsTest extends TestCase {
+         assertTrue(ClassUtils.isAssignable(String.class, String.class));
+         assertFalse(ClassUtils.isAssignable(Object.class, String.class));
+ 
+-        boolean autoboxing = SystemUtils.isJavaVersionAtLeast(JAVA_1_5);
++        boolean autoboxing = SystemUtils.isJavaVersionAtLeast(1.5f);
+ 
+         assertEquals(autoboxing, ClassUtils.isAssignable(Integer.TYPE, Integer.class));
+         assertEquals(autoboxing, ClassUtils.isAssignable(Integer.TYPE, Object.class));
+@@ -487,7 +485,7 @@ public class ClassUtilsTest extends TestCase {
+     }
+ 
+     public void test_isAssignable_DefaultUnboxing_Widening() throws Exception {
+-        boolean autoboxing = SystemUtils.isJavaVersionAtLeast(JAVA_1_5);
++        boolean autoboxing = SystemUtils.isJavaVersionAtLeast(1.5f);
+ 
+         // test byte conversions
+         assertFalse("byte -> char", ClassUtils.isAssignable(Byte.class, Character.TYPE));
+diff --git a/src/test/java/org/apache/commons/lang3/LocaleUtilsTest.java b/src/test/java/org/apache/commons/lang3/LocaleUtilsTest.java
+index 2f054ae94..28ab263cf 100644
+--- a/src/test/java/org/apache/commons/lang3/LocaleUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/LocaleUtilsTest.java
+@@ -26,8 +26,6 @@ import java.util.List;
+ import java.util.Locale;
+ import java.util.Set;
+ 
+-import static org.apache.commons.lang3.JavaVersion.*;
+-
+ import junit.framework.TestCase;
+ 
+ /**
+@@ -214,7 +212,7 @@ public class LocaleUtilsTest extends TestCase {
+         assertValidToLocale("us_EN_A", "us", "EN", "A");
+         // this isn't pretty, but was caused by a jdk bug it seems
+         // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4210525
+-        if (SystemUtils.isJavaVersionAtLeast(JAVA_1_4)) {
++        if (SystemUtils.isJavaVersionAtLeast(1.4f)) {
+             assertValidToLocale("us_EN_a", "us", "EN", "a");
+             assertValidToLocale("us_EN_SFsafdFDsdfF", "us", "EN", "SFsafdFDsdfF");
+         } else {
+diff --git a/src/test/java/org/apache/commons/lang3/SystemUtilsTest.java b/src/test/java/org/apache/commons/lang3/SystemUtilsTest.java
+index 4d7089162..b6bbf8ffb 100644
+--- a/src/test/java/org/apache/commons/lang3/SystemUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/SystemUtilsTest.java
+@@ -27,8 +27,6 @@ import java.util.Locale;
+ import junit.framework.Assert;
+ import junit.framework.TestCase;
+ 
+-import static org.apache.commons.lang3.JavaVersion.*;
+-
+ /**
+  * Unit tests {@link org.apache.commons.lang3.SystemUtils}.
+  * 
+@@ -189,6 +187,62 @@ public class SystemUtilsTest extends TestCase {
+         }
+     }
+ 
++    public void testJavaVersionAsFloat() {
++        assertEquals(0f, SystemUtils.toJavaVersionFloat(null), 0.000001f);
++        assertEquals(0f, SystemUtils.toJavaVersionFloat(""), 0.000001f);
++        assertEquals(0f, SystemUtils.toJavaVersionFloat("0"), 0.000001f);
++        assertEquals(1.1f, SystemUtils.toJavaVersionFloat("1.1"), 0.000001f);
++        assertEquals(1.2f, SystemUtils.toJavaVersionFloat("1.2"), 0.000001f);
++        assertEquals(1.3f, SystemUtils.toJavaVersionFloat("1.3.0"), 0.000001f);
++        assertEquals(1.31f, SystemUtils.toJavaVersionFloat("1.3.1"), 0.000001f);
++        assertEquals(1.4f, SystemUtils.toJavaVersionFloat("1.4.0"), 0.000001f);
++        assertEquals(1.41f, SystemUtils.toJavaVersionFloat("1.4.1"), 0.000001f);
++        assertEquals(1.42f, SystemUtils.toJavaVersionFloat("1.4.2"), 0.000001f);
++        assertEquals(1.5f, SystemUtils.toJavaVersionFloat("1.5.0"), 0.000001f);
++        assertEquals(1.6f, SystemUtils.toJavaVersionFloat("1.6.0"), 0.000001f);
++        assertEquals(1.31f, SystemUtils.toJavaVersionFloat("JavaVM-1.3.1"), 0.000001f);
++        assertEquals(1.3f, SystemUtils.toJavaVersionFloat("1.3.0 subset"), 0.000001f);
++        // This used to return 0f in [lang] version 2.5:
++        assertEquals(1.3f, SystemUtils.toJavaVersionFloat("XXX-1.3.x"), 0.000001f);
++    }
++
++    public void testJavaVersionAsInt() {
++        assertEquals(0, SystemUtils.toJavaVersionInt(null));
++        assertEquals(0, SystemUtils.toJavaVersionInt(""));
++        assertEquals(0, SystemUtils.toJavaVersionInt("0"));
++        assertEquals(110, SystemUtils.toJavaVersionInt("1.1"));
++        assertEquals(120, SystemUtils.toJavaVersionInt("1.2"));
++        assertEquals(130, SystemUtils.toJavaVersionInt("1.3.0"));
++        assertEquals(131, SystemUtils.toJavaVersionInt("1.3.1"));
++        assertEquals(140, SystemUtils.toJavaVersionInt("1.4.0"));
++        assertEquals(141, SystemUtils.toJavaVersionInt("1.4.1"));
++        assertEquals(142, SystemUtils.toJavaVersionInt("1.4.2"));
++        assertEquals(150, SystemUtils.toJavaVersionInt("1.5.0"));
++        assertEquals(160, SystemUtils.toJavaVersionInt("1.6.0"));
++        assertEquals(131, SystemUtils.toJavaVersionInt("JavaVM-1.3.1"));
++        assertEquals(131, SystemUtils.toJavaVersionInt("1.3.1 subset"));
++        // This used to return 0f in [lang] version 2.5:
++        assertEquals(130, SystemUtils.toJavaVersionInt("XXX-1.3.x"));
++    }
++
++    public void testJavaVersionAtLeastFloat() {
++        float version = SystemUtils.JAVA_VERSION_FLOAT;
++        assertEquals(true, SystemUtils.isJavaVersionAtLeast(version));
++        version -= 0.1f;
++        assertEquals(true, SystemUtils.isJavaVersionAtLeast(version));
++        version += 0.2f;
++        assertEquals(false, SystemUtils.isJavaVersionAtLeast(version));
++    }
++
++    public void testJavaVersionAtLeastInt() {
++        int version = SystemUtils.JAVA_VERSION_INT;
++        assertEquals(true, SystemUtils.isJavaVersionAtLeast(version));
++        version -= 10;
++        assertEquals(true, SystemUtils.isJavaVersionAtLeast(version));
++        version += 20;
++        assertEquals(false, SystemUtils.isJavaVersionAtLeast(version));
++    }
++
+     public void testJavaVersionMatches() {
+         String javaVersion = null;
+         assertEquals(false, SystemUtils.isJavaVersionMatch(javaVersion, "1.0"));
+@@ -347,7 +401,7 @@ public class SystemUtilsTest extends TestCase {
+     }
+ 
+     public void testJavaAwtHeadless() {
+-        boolean atLeastJava14 = SystemUtils.isJavaVersionAtLeast(JAVA_1_4);
++        boolean atLeastJava14 = SystemUtils.isJavaVersionAtLeast(140);
+         String expectedStringValue = System.getProperty("java.awt.headless");
+         String expectedStringValueWithDefault = System.getProperty("java.awt.headless", "false");
+         assertNotNull(expectedStringValueWithDefault);
+diff --git a/src/test/java/org/apache/commons/lang3/math/NumberUtilsTest.java b/src/test/java/org/apache/commons/lang3/math/NumberUtilsTest.java
+index a0d99a42e..bb94ab31c 100644
+--- a/src/test/java/org/apache/commons/lang3/math/NumberUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/math/NumberUtilsTest.java
+@@ -23,7 +23,6 @@ import java.math.BigInteger;
+ 
+ import junit.framework.TestCase;
+ 
+-import static org.apache.commons.lang3.JavaVersion.*;
+ import org.apache.commons.lang3.SystemUtils;
+ 
+ /**
+@@ -199,7 +198,7 @@ public class NumberUtilsTest extends TestCase {
+                 .createNumber("12345678901234567890L"));
+ 
+         // jdk 1.2 doesn't support this. unsure about jdk 1.2.2
+-        if (SystemUtils.isJavaVersionAtLeast(JAVA_1_3)) {
++        if (SystemUtils.isJavaVersionAtLeast(1.3f)) {
+             assertEquals("createNumber(String) 15 failed", new BigDecimal("1.1E-700"), NumberUtils
+                     .createNumber("1.1E-700F"));
+         }
+diff --git a/src/test/java/org/apache/commons/lang3/text/ExtendedMessageFormatTest.java b/src/test/java/org/apache/commons/lang3/text/ExtendedMessageFormatTest.java
+index 36b89e8e0..e2bde90b4 100644
+--- a/src/test/java/org/apache/commons/lang3/text/ExtendedMessageFormatTest.java
++++ b/src/test/java/org/apache/commons/lang3/text/ExtendedMessageFormatTest.java
+@@ -34,7 +34,6 @@ import java.util.Map;
+ 
+ import junit.framework.TestCase;
+ 
+-import static org.apache.commons.lang3.JavaVersion.*;
+ import org.apache.commons.lang3.SystemUtils;
+ 
+ /**
+@@ -360,7 +359,7 @@ public class ExtendedMessageFormatTest extends TestCase {
+ 
+     //can't trust what MessageFormat does with toPattern() pre 1.4:
+     private void assertPatternsEqual(String message, String expected, String actual) {
+-        if (SystemUtils.isJavaVersionAtLeast(JAVA_1_4)) {
++        if (SystemUtils.isJavaVersionAtLeast(1.4f)) {
+             assertEquals(message, expected, actual);
+         }
+     }
+diff --git a/src/test/java/org/apache/commons/lang3/time/DateUtilsTest.java b/src/test/java/org/apache/commons/lang3/time/DateUtilsTest.java
+index 4fb8ec287..68094f9e9 100644
+--- a/src/test/java/org/apache/commons/lang3/time/DateUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/time/DateUtilsTest.java
+@@ -32,7 +32,6 @@ import java.util.TimeZone;
+ import junit.framework.AssertionFailedError;
+ import junit.framework.TestCase;
+ 
+-import static org.apache.commons.lang3.JavaVersion.*;
+ import org.apache.commons.lang3.SystemUtils;
+ 
+ /**
+@@ -806,7 +805,7 @@ public class DateUtilsTest extends TestCase {
+         assertEquals("round MET date across DST change-over",
+                 dateTimeParser.parse("March 30, 2003 01:00:00.000"),
+                 DateUtils.round((Object) cal4, Calendar.HOUR_OF_DAY));
+-        if (SystemUtils.isJavaVersionAtLeast(JAVA_1_4)) {
++        if (SystemUtils.isJavaVersionAtLeast(1.4f)) {
+             assertEquals("round MET date across DST change-over",
+                     dateTimeParser.parse("March 30, 2003 03:00:00.000"),
+                     DateUtils.round(date5, Calendar.HOUR_OF_DAY));
+@@ -826,7 +825,7 @@ public class DateUtilsTest extends TestCase {
+                     dateTimeParser.parse("March 30, 2003 04:00:00.000"),
+                     DateUtils.round((Object) cal7, Calendar.HOUR_OF_DAY));
+         } else {
+-            this.warn("WARNING: Some date rounding tests not run since the current version is " + SystemUtils.JAVA_SPECIFICATION_VERSION);
++            this.warn("WARNING: Some date rounding tests not run since the current version is " + SystemUtils.JAVA_VERSION);
+         }
+         TimeZone.setDefault(defaultZone);
+         dateTimeParser.setTimeZone(defaultZone);
+@@ -1092,8 +1091,8 @@ public class DateUtilsTest extends TestCase {
+      * see http://issues.apache.org/jira/browse/LANG-59
+      */
+     public void testTruncateLang59() throws Exception {
+-        if (!SystemUtils.isJavaVersionAtLeast(JAVA_1_4)) {
+-            this.warn("WARNING: Test for LANG-59 not run since the current version is " + SystemUtils.JAVA_SPECIFICATION_VERSION);
++        if (!SystemUtils.isJavaVersionAtLeast(1.4f)) {
++            this.warn("WARNING: Test for LANG-59 not run since the current version is " + SystemUtils.JAVA_VERSION);
+             return;
+         }
+ 
+@@ -1380,7 +1379,7 @@ public class DateUtilsTest extends TestCase {
+         assertEquals("ceiling MET date across DST change-over",
+                 dateTimeParser.parse("March 30, 2003 03:00:00.000"),
+                 DateUtils.ceiling((Object) cal4, Calendar.HOUR_OF_DAY));
+-        if (SystemUtils.isJavaVersionAtLeast(JAVA_1_4)) {
++        if (SystemUtils.isJavaVersionAtLeast(1.4f)) {
+             assertEquals("ceiling MET date across DST change-over",
+                     dateTimeParser.parse("March 30, 2003 03:00:00.000"),
+                     DateUtils.ceiling(date5, Calendar.HOUR_OF_DAY));
+@@ -1400,7 +1399,7 @@ public class DateUtilsTest extends TestCase {
+                     dateTimeParser.parse("March 30, 2003 04:00:00.000"),
+                     DateUtils.ceiling((Object) cal7, Calendar.HOUR_OF_DAY));
+         } else {
+-            this.warn("WARNING: Some date ceiling tests not run since the current version is " + SystemUtils.JAVA_SPECIFICATION_VERSION);
++            this.warn("WARNING: Some date ceiling tests not run since the current version is " + SystemUtils.JAVA_VERSION);
+         }
+         TimeZone.setDefault(defaultZone);
+         dateTimeParser.setTimeZone(defaultZone);

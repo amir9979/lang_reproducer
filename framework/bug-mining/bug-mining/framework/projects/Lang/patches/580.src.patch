@@ -1,0 +1,160 @@
+diff --git a/src/main/java/org/apache/commons/lang3/math/NumberUtils.java b/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
+index 4125fac19..ab321b086 100644
+--- a/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
++++ b/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
+@@ -706,8 +706,6 @@ public class NumberUtils {
+         // if both e and E are present, this is caught by the checks on expPos (which prevent IOOBE)
+         // and the parsing which will detect if e or E appear in a number due to using the wrong offset
+ 
+-        // Detect if the return type has been requested
+-        final boolean requestType = !Character.isDigit(lastChar) && lastChar != '.';
+         if (decPos > -1) { // there is a decimal point
+             if (expPos > -1) { // there is an exponent
+                 if (expPos < decPos || expPos > length) { // prevents double exponent causing IOOBE
+@@ -715,8 +713,7 @@ public class NumberUtils {
+                 }
+                 dec = str.substring(decPos + 1, expPos);
+             } else {
+-                // No exponent, but there may be a type character to remove
+-                dec = str.substring(decPos + 1, requestType ? length - 1 : length);
++                dec = str.substring(decPos + 1);
+             }
+             mant = getMantissa(str, decPos);
+         } else {
+@@ -726,12 +723,11 @@ public class NumberUtils {
+                 }
+                 mant = getMantissa(str, expPos);
+             } else {
+-                // No decimal, no exponent, but there may be a type character to remove
+-                mant = getMantissa(str, requestType ? length - 1 : length);
++                mant = getMantissa(str);
+             }
+             dec = null;
+         }
+-        if (requestType) {
++        if (!Character.isDigit(lastChar) && lastChar != '.') {
+             if (expPos > -1 && expPos < length - 1) {
+                 exp = str.substring(expPos + 1, length - 1);
+             } else {
+@@ -739,6 +735,7 @@ public class NumberUtils {
+             }
+             //Requesting a specific type..
+             final String numeric = str.substring(0, length - 1);
++            final boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+             switch (lastChar) {
+                 case 'l' :
+                 case 'L' :
+@@ -758,7 +755,7 @@ public class NumberUtils {
+                 case 'F' :
+                     try {
+                         final Float f = createFloat(str);
+-                        if (!(f.isInfinite() || f.floatValue() == 0.0F && !isZero(mant, dec))) {
++                        if (!(f.isInfinite() || f.floatValue() == 0.0F && !allZeros)) {
+                             //If it's too big for a float or the float value = 0 and the string
+                             //has non-zeros in it, then float does not have the precision we want
+                             return f;
+@@ -772,7 +769,7 @@ public class NumberUtils {
+                 case 'D' :
+                     try {
+                         final Double d = createDouble(str);
+-                        if (!(d.isInfinite() || d.doubleValue() == 0.0D && !isZero(mant, dec))) {
++                        if (!(d.isInfinite() || d.doubleValue() == 0.0D && !allZeros)) {
+                             return d;
+                         }
+                     } catch (final NumberFormatException nfe) { // NOPMD
+@@ -812,15 +809,16 @@ public class NumberUtils {
+         }
+ 
+         //Must be a Float, Double, BigDecimal
++        final boolean allZeros = isAllZeros(mant) && isAllZeros(exp);
+         try {
+             final Float f = createFloat(str);
+             final Double d = createDouble(str);
+             if (!f.isInfinite()
+-                    && !(f.floatValue() == 0.0F && !isZero(mant, dec))
++                    && !(f.floatValue() == 0.0F && !allZeros)
+                     && f.toString().equals(d.toString())) {
+                 return f;
+             }
+-            if (!d.isInfinite() && !(d.doubleValue() == 0.0D && !isZero(mant, dec))) {
++            if (!d.isInfinite() && !(d.doubleValue() == 0.0D && !allZeros)) {
+                 final BigDecimal b = createBigDecimal(str);
+                 if (b.compareTo(BigDecimal.valueOf(d.doubleValue())) == 0) {
+                     return d;
+@@ -839,52 +837,34 @@ public class NumberUtils {
+      * <p>Returns mantissa of the given number.</p>
+      *
+      * @param str the string representation of the number
+-     * @param stopPos the position of the exponent or decimal point
+      * @return mantissa of the given number
+      */
+-    private static String getMantissa(final String str, final int stopPos) {
+-        final char firstChar = str.charAt(0);
+-        final boolean hasSign = firstChar == '-' || firstChar == '+';
+-
+-        return hasSign ? str.substring(1, stopPos) : str.substring(0, stopPos);
++    private static String getMantissa(final String str) {
++        return getMantissa(str, str.length());
+     }
+ 
+     /**
+-     * Utility method for {@link #createNumber(java.lang.String)}.
+-     *
+-     * <p>This will check if the magnitude of the number is zero by checking if there
+-     * are only zeros before and after the decimal place.</p>
+-     *
+-     * <p>Note: It is <strong>assumed</strong> that the input string has been converted
+-     * to either a Float or Double with a value of zero when this method is called.
+-     * This eliminates invalid input for example {@code ".", ".D", ".e0"}.</p>
+-     *
+-     * <p>Thus the method only requires checking if both arguments are null, empty or
+-     * contain only zeros.</p>
++     * <p>Utility method for {@link #createNumber(java.lang.String)}.</p>
+      *
+-     * <p>Given {@code s = mant + "." + dec}:</p>
+-     * <ul>
+-     * <li>{@code true} if s is {@code "0.0"}
+-     * <li>{@code true} if s is {@code "0."}
+-     * <li>{@code true} if s is {@code ".0"}
+-     * <li>{@code false} otherwise (this assumes {@code "."} is not possible)
+-     * </ul>
++     * <p>Returns mantissa of the given number.</p>
+      *
+-     * @param mant the mantissa decimal digits before the decimal point (sign must be removed; never null)
+-     * @param dec the decimal digits after the decimal point (exponent and type specifier removed;
+-     *            can be null)
+-     * @return true if the magnitude is zero
++     * @param str the string representation of the number
++     * @param stopPos the position of the exponent or decimal point
++     * @return mantissa of the given number
+      */
+-    private static boolean isZero(final String mant, String dec) {
+-        return isAllZeros(mant) && isAllZeros(dec);
++    private static String getMantissa(final String str, final int stopPos) {
++        final char firstChar = str.charAt(0);
++        final boolean hasSign = firstChar == '-' || firstChar == '+';
++
++        return hasSign ? str.substring(1, stopPos) : str.substring(0, stopPos);
+     }
+ 
+     /**
+-     * Utility method for {@link #createNumber(java.lang.String)}.
++     * <p>Utility method for {@link #createNumber(java.lang.String)}.</p>
+      *
+-     * <p>Returns {@code true} if s is {@code null} or empty.</p>
++     * <p>Returns {@code true} if s is {@code null}.</p>
+      *
+-     * @param str the String to check
++     * @param str  the String to check
+      * @return if it is all zeros or {@code null}
+      */
+     private static boolean isAllZeros(final String str) {
+@@ -896,7 +876,7 @@ public class NumberUtils {
+                 return false;
+             }
+         }
+-        return true;
++        return !str.isEmpty();
+     }
+ 
+     //-----------------------------------------------------------------------

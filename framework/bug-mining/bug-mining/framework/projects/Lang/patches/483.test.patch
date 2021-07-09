@@ -1,0 +1,17 @@
+diff --git a/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java b/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
+index eea6b87c5..1b88147a3 100644
+--- a/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
+@@ -781,12 +781,6 @@ public class TypeUtilsTest<B> {
+         Assert.assertTrue(TypeUtils.isAssignable(fromType, failingToType));
+     }
+ 
+-    @Test
+-    public void testLANG1348() throws Exception {
+-        final Method method = Enum.class.getMethod("valueOf", Class.class, String.class);
+-        Assert.assertEquals("T extends java.lang.Enum<T>", TypeUtils.toString(method.getGenericReturnType()));
+-    }
+-
+     public Iterable<? extends Map<Integer, ? extends Collection<?>>> iterable;
+ 
+     public static <G extends Comparable<G>> G stub() {

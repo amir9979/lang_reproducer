@@ -1,0 +1,60 @@
+diff --git a/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java b/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java
+index 38a5f9ffa..99ea44d7b 100644
+--- a/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/ArrayUtilsTest.java
+@@ -309,14 +309,6 @@ public class ArrayUtilsTest {
+         assertFalse(ArrayUtils.contains(array, (float) 99));
+     }
+ 
+-    @Test
+-    public void testContainsFloatNaN() {
+-        float[] array = new float[] { Float.NEGATIVE_INFINITY, Float.NaN, Float.POSITIVE_INFINITY };
+-        assertTrue(ArrayUtils.contains(array, Float.POSITIVE_INFINITY));
+-        assertTrue(ArrayUtils.contains(array, Float.NEGATIVE_INFINITY));
+-        assertTrue(ArrayUtils.contains(array, Float.NaN));
+-    }
+-
+     @Test
+     public void testContainsInt() {
+         int[] array = null;
+@@ -1132,14 +1124,6 @@ public class ArrayUtilsTest {
+         assertEquals(-1, ArrayUtils.indexOf(array, (float) 99));
+     }
+ 
+-    @Test
+-    public void testIndexOfFloatNaN() {
+-        float[] array = new float[] { Float.NEGATIVE_INFINITY, Float.NaN, Float.POSITIVE_INFINITY, Float.NaN };
+-        assertEquals(0, ArrayUtils.indexOf(array, Float.NEGATIVE_INFINITY));
+-        assertEquals(1, ArrayUtils.indexOf(array, Float.NaN));
+-        assertEquals(2, ArrayUtils.indexOf(array, Float.POSITIVE_INFINITY));
+-    }
+-
+     @SuppressWarnings("cast")
+     @Test
+     public void testIndexOfFloatWithStartIndex() {
+diff --git a/src/test/java/org/apache/commons/lang3/reflect/FieldUtilsTest.java b/src/test/java/org/apache/commons/lang3/reflect/FieldUtilsTest.java
+index 0bcacea67..15fe8c32c 100644
+--- a/src/test/java/org/apache/commons/lang3/reflect/FieldUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/reflect/FieldUtilsTest.java
+@@ -210,7 +210,7 @@ public class FieldUtilsTest {
+     @Test
+     public void testGetFieldsWithAnnotation() throws NoSuchFieldException {
+         assertArrayEquals(new Field[0], FieldUtils.getFieldsWithAnnotation(Object.class, Annotated.class));
+-        final Field[] annotatedFields = sort(new Field[] {
++        final Field[] annotatedFields = sort(new Field[] { 
+                 FieldUtilsTest.class.getDeclaredField("publicChild"),
+                 FieldUtilsTest.class.getDeclaredField("privatelyShadowedChild") });
+         assertArrayEquals(annotatedFields,
+diff --git a/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java b/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
+index 8cdce0b89..a3711bc53 100644
+--- a/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
++++ b/src/test/java/org/apache/commons/lang3/reflect/TypeUtilsTest.java
+@@ -790,7 +790,7 @@ public class TypeUtilsTest<B> {
+         assertFalse(paramType.getClass().isAssignableFrom(WildcardType.class));
+ 
+         WildcardType testType = TypeUtils.WILDCARD_ALL;
+-        // TODO This test returns true unlike the test above.
++        // TODO This test returns true unlike the test above. 
+         // Is this a bug in this test or in the main code?
+         assertFalse(TypeUtils.isAssignable(paramType, testType),
+                 () -> String.format("TypeUtils.isAssignable(%s, %s)", paramType, testType));

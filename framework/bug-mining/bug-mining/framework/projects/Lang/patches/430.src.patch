@@ -1,0 +1,30 @@
+diff --git a/src/main/java/org/apache/commons/lang3/math/NumberUtils.java b/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
+index 205baf4ed..995ae597e 100644
+--- a/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
++++ b/src/main/java/org/apache/commons/lang3/math/NumberUtils.java
+@@ -21,7 +21,6 @@ import java.math.BigDecimal;
+ import java.math.BigInteger;
+ 
+ import org.apache.commons.lang3.StringUtils;
+-import org.apache.commons.lang3.SystemUtils;
+ import org.apache.commons.lang3.Validate;
+ 
+ /**
+@@ -1408,6 +1407,8 @@ public class NumberUtils {
+         boolean hasDecPoint = false;
+         boolean allowSigns = false;
+         boolean foundDigit = false;
++        boolean isJava6 = StringUtils.startsWith(
++                System.getProperty("java.version"), "1.6");
+         // deal with any possible sign up front
+         final int start = (chars[0] == '-' || chars[0] == '+') ? 1 : 0;
+         final boolean hasLeadingPlusSign = (start == 1 && chars[0] == '+');
+@@ -1480,7 +1481,7 @@ public class NumberUtils {
+         }
+         if (i < chars.length) {
+             if (chars[i] >= '0' && chars[i] <= '9') {
+-                if (SystemUtils.IS_JAVA_1_6 && hasLeadingPlusSign && !hasDecPoint) {
++                if (isJava6 && hasLeadingPlusSign && !hasDecPoint) {
+                     return false;
+                 }
+                 // no type qualifier, OK

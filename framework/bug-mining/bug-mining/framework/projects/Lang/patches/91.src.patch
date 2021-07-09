@@ -1,0 +1,52 @@
+diff --git a/src/java/org/apache/commons/lang/time/StopWatch.java b/src/java/org/apache/commons/lang/time/StopWatch.java
+index 0dd3d021b..46066ca79 100644
+--- a/src/java/org/apache/commons/lang/time/StopWatch.java
++++ b/src/java/org/apache/commons/lang/time/StopWatch.java
+@@ -83,12 +83,12 @@ public class StopWatch {
+     /**
+      * The start time.
+      */
+-    private long startTime;
++    private long startTime = -1;
+ 
+     /**
+      * The stop time.
+      */
+-    private long stopTime;
++    private long stopTime = -1;
+ 
+     /**
+      * <p>
+@@ -118,6 +118,7 @@ public class StopWatch {
+         if (this.runningState != STATE_UNSTARTED) {
+             throw new IllegalStateException("Stopwatch already started. ");
+         }
++        this.stopTime = -1;
+         this.startTime = System.currentTimeMillis();
+         this.runningState = STATE_RUNNING;
+     }
+@@ -156,6 +157,8 @@ public class StopWatch {
+     public void reset() {
+         this.runningState = STATE_UNSTARTED;
+         this.splitState = STATE_UNSPLIT;
++        this.startTime = -1;
++        this.stopTime = -1;
+     }
+ 
+     /**
+@@ -196,6 +199,7 @@ public class StopWatch {
+         if (this.splitState != STATE_SPLIT) {
+             throw new IllegalStateException("Stopwatch has not been split. ");
+         }
++        this.stopTime = -1;
+         this.splitState = STATE_UNSPLIT;
+     }
+ 
+@@ -238,6 +242,7 @@ public class StopWatch {
+             throw new IllegalStateException("Stopwatch must be suspended to resume. ");
+         }
+         this.startTime += (System.currentTimeMillis() - this.stopTime);
++        this.stopTime = -1;
+         this.runningState = STATE_RUNNING;
+     }
+ 

@@ -1,0 +1,53 @@
+diff --git a/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java b/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java
+index 1c3391030..56fda5556 100644
+--- a/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java
++++ b/src/main/java/org/apache/commons/lang3/builder/ToStringStyle.java
+@@ -19,10 +19,7 @@ package org.apache.commons.lang3.builder;
+ import java.io.Serializable;
+ import java.lang.reflect.Array;
+ import java.util.Collection;
+-import java.util.Iterator;
+ import java.util.Map;
+-import java.util.Objects;
+-import java.util.Map.Entry;
+ import java.util.WeakHashMap;
+ 
+ import org.apache.commons.lang3.ClassUtils;
+@@ -2598,37 +2595,6 @@ public abstract class ToStringStyle implements Serializable {
+             appendDetail(buffer, fieldName, valueAsString);
+         }
+ 
+-        @Override
+-        protected void appendDetail(final StringBuffer buffer, final String fieldName, final Map<?, ?> map) {
+-            if (map != null && !map.isEmpty()) {
+-                buffer.append(getContentStart());
+-
+-                boolean firstItem = true;
+-                for (final Entry<?, ?> entry : map.entrySet()) {
+-                    final String keyStr = Objects.toString(entry.getKey(), null);
+-                    if (keyStr != null) {
+-                        if (firstItem) {
+-                            firstItem = false;
+-                        } else {
+-                            appendFieldEnd(buffer, keyStr);
+-                        }
+-                        appendFieldStart(buffer, keyStr);
+-                        final Object value = entry.getValue();
+-                        if (value == null) {
+-                            appendNullText(buffer, keyStr);
+-                        } else {
+-                            appendInternal(buffer, keyStr, value, true);
+-                        }
+-                    }
+-                }
+-
+-                buffer.append(getContentEnd());
+-                return;
+-            }
+-
+-            buffer.append(map);
+-        }
+-
+         private boolean isJsonArray(final String valueAsString) {
+             return valueAsString.startsWith(getArrayStart())
+                     && valueAsString.endsWith(getArrayEnd());
