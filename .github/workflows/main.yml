@@ -46,7 +46,9 @@ jobs:
 #           fetch-depth: 0
       
       - run: cpanm --installdeps .
-      - run: ./init.sh
+      - run: |
+            chmod -R 777 .
+            ./init.sh
 
 #       - name: initialize-project-and-collect-issues
 #         run: ./initialize-project-and-collect-issues.pl -p Lang -n commons-lang -w bug-mining -r https://github.com/apache/commons-lang.git -g jira -t LANG -e "/(LANG-\d+)/mi"
