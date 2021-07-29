@@ -98,23 +98,23 @@ jobs:
       - run: ./init.sh
 
       - name: initialize-project-and-collect-issues
-        run: ./initialize-project-and-collect-issues.pl -p Lang -n commons-lang -w bug-mining_${{ matrix.bug_ind }} -r https://github.com/apache/commons-lang.git -g jira -t LANG -e "/(LANG-\d+)/mi"
+        run: ./initialize-project-and-collect-issues.pl -p Lang3 -n commons-lang -w bug-mining_${{ matrix.bug_ind }} -r https://github.com/apache/commons-lang.git -g jira -t LANG -e "/(LANG-\d+)/mi"
         working-directory: ./framework/bug-mining
       
       - name: initialize-revisions
-        run: ./initialize-revisions.pl -p Lang -w bug-mining_${{ matrix.bug_ind }}  -i ${{ matrix.bug_ind }} 
+        run: ./initialize-revisions.pl -p Lang3 -w bug-mining_${{ matrix.bug_ind }}  -i ${{ matrix.bug_ind }} 
         working-directory: ./framework/bug-mining
 
       - name: analyze-project
-        run: ./analyze-project.pl -p Lang -w bug-mining_${{ matrix.bug_ind }}  -g jira -t LANG -i ${{ matrix.bug_ind }} 
+        run: ./analyze-project.pl -p Lang3 -w bug-mining_${{ matrix.bug_ind }}  -g jira -t LANG -i ${{ matrix.bug_ind }} 
         working-directory: ./framework/bug-mining
 
       - name: get-trigger
-        run: ./get-trigger.pl -p Lang -w bug-mining_${{ matrix.bug_ind }}
+        run: ./get-trigger.pl -p Lang3 -w bug-mining_${{ matrix.bug_ind }}
         working-directory: ./framework/bug-mining
 
       - name: get-metadata
-        run: ./get-metadata.pl -p Lang -w bug-mining_${{ matrix.bug_ind }}
+        run: ./get-metadata.pl -p Lang3 -w bug-mining_${{ matrix.bug_ind }}
         working-directory: ./framework/bug-mining
 
       - name: delete repo
