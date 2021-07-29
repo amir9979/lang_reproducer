@@ -98,7 +98,7 @@ jobs:
       - run: ./init.sh
 
       - name: initialize-project-and-collect-issues
-        run: ./initialize-project-and-collect-issues.pl -p Lang -n commons-lang -w bug-mining_${{ matrix.bug_ind }} -r https://github.com/apache/commons-lang.git -g jira -t LANG -e "/(LANG-\d+)/mi"
+        run: ./initialize-project-and-collect-issues.pl -p Lang -n commons-lang3 -w bug-mining_${{ matrix.bug_ind }} -r https://github.com/apache/commons-lang.git -g jira -t LANG -e "/(LANG-\d+)/mi"
         working-directory: ./framework/bug-mining
       
       - name: initialize-revisions
